@@ -1,0 +1,32 @@
+[
+  {
+    "alert_id": "a-0001",
+    "timestamp": "2026-10-05T02:14:00Z",
+    "user": "U123@DOM1",
+    "src_host": "C123",
+    "dst_host": "C456",
+    "source": "ml",
+    "rule_id": null,
+    "anomaly_score": 0.87,
+    "is_human_prob": 0.12,
+    "severity": "high",
+    "mitre": {"tactic": "Lateral Movement", "technique_id": "T1021", "technique_name": "Remote Services"},
+    "features": {"login_per_hour": 42, "distinct_dst": 17, "fail_ratio": 0.3},
+    "agent_analysis": null
+  },
+  {
+    "alert_id": "a-0002",
+    "timestamp": "2026-10-05T03:40:00Z",
+    "user": "U777@DOM1",
+    "src_host": "C900",
+    "dst_host": "C901",
+    "source": "rule",
+    "rule_id": "sigma_login_offhours",
+    "anomaly_score": 0.55,
+    "is_human_prob": 0.8,
+    "severity": "medium",
+    "mitre": {"tactic": "Initial Access", "technique_id": "T1078", "technique_name": "Valid Accounts"},
+    "features": {"login_per_hour": 5, "offhours_ratio": 1.0},
+    "agent_analysis": null
+  }
+]

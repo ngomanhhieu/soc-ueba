@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Alert",
+  "type": "object",
+  "required": ["alert_id", "timestamp", "user", "source", "anomaly_score", "severity"],
+  "properties": {
+    "alert_id": {"type": "string"},
+    "timestamp": {"type": "string", "description": "ISO 8601, UTC"},
+    "user": {"type": "string"},
+    "src_host": {"type": ["string", "null"]},
+    "dst_host": {"type": ["string", "null"]},
+    "source": {"enum": ["ml", "rule", "statistical"]},
+    "rule_id": {"type": ["string", "null"]},
+    "anomaly_score": {"type": "number", "minimum": 0, "maximum": 1},
+    "is_human_prob": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "severity": {"enum": ["low", "medium", "high", "critical"]},
+    "mitre": {
+      "type": ["object", "null"],
+      "properties": {
+        "tactic": {"type": "string"},
+        "technique_id": {"type": "string"},
+        "technique_name": {"type": "string"}
+      }
+    },
+    "features": {"type": "object"},
+    "agent_analysis": {
+      "type": ["object", "null"],
+      "properties": {
+        "summary": {"type": "string"},
+        "explanation": {"type": "string"},
+        "confidence": {"type": "number"},
+        "recommended_action": {"type": "string"},
+        "requires_approval": {"type": "boolean"}
+      }
+    }
+  }
+}

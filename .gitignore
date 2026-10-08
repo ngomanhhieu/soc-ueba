@@ -1,0 +1,19 @@
+# data & models (nặng, không đẩy lên git)
+ml/data/raw/*
+ml/data/processed/*
+ml/models/*
+*.gz
+*.parquet
+*.csv
+!schema/*.csv
+# python
+__pycache__/
+.venv/
+venv/
+.ipynb_checkpoints/
+# env & docker
+.env
+platform/**/data/
+node_modules/
+.DS_Store
+!.gitkeep
