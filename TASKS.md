@@ -1,14 +1,15 @@
 # Checklist công việc
 
 ## Người A – Data & ML (`ml/`)
-- [ ] A1 Tải, làm sạch, chọn subset LANL (rồi CERT)
-- [ ] A2 Feature engineering theo user × giờ/ngày
-- [ ] A3 Baseline thống kê (z-score, IQR, peer group)
-- [ ] A4 Train Isolation Forest, Autoencoder; tinh chỉnh
-- [ ] A5 Bộ phân loại người thật / bot
-- [ ] A6 Đánh giá: Precision/Recall/F1, ROC-AUC, PR-AUC, ablation
-- [ ] A7 Bảng mapping MITRE ATT&CK (`ml/src/mitre_mapping.json`)
-- [ ] A8 Xuất `alerts.json` đúng schema, đẩy vào Elasticsearch
+> Code pipeline LANL đã xong (đã chạy thử bằng dữ liệu giả). Cần chạy trên LANL thật để lấy số liệu báo cáo.
+- [x] A1 Tải, làm sạch, chọn subset LANL (code xong; CERT: chưa)
+- [x] A2 Feature engineering theo user × giờ/ngày
+- [x] A3 Baseline thống kê (z-score, IQR, peer group)
+- [x] A4 Train Isolation Forest, Autoencoder; tinh chỉnh
+- [x] A5 Bộ phân loại người thật / bot
+- [x] A6 Đánh giá: Precision/Recall/F1, ROC-AUC, PR-AUC, ablation
+- [x] A7 Bảng mapping MITRE ATT&CK (`ml/src/mitre_mapping.json`)
+- [x] A8 Xuất `alerts.json` đúng schema, đẩy vào Elasticsearch
 
 ## Người B – Platform, Agent, Web (`platform/`)
 - [ ] B1 Docker Compose Wazuh/Elastic Stack
