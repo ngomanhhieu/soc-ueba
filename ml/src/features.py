@@ -39,12 +39,13 @@ def _new_entity_count(df: pd.DataFrame, col: str) -> pd.Series:
 
 
 def build_features(df: pd.DataFrame, window: int = 3600, off_start: int = 8,
-                   off_end: int = 18) -> pd.DataFrame:
+                   off_end: int = 18, tz_offset: float = 0) -> pd.DataFrame:
+    """tz_offset: giờ địa phương so với UTC, chỉ dùng cho log thật (epoch UTC); LANL = 0."""
     df = df.copy()
     df["user"] = df["user"].astype(str)  # khoá nhóm dạng chuỗi -> tránh lệch category giữa các bảng
     df = df.sort_values(["user", "time"], kind="stable").reset_index(drop=True)
     df["win"] = df["time"] // window
-    hour = (df["time"] // 3600) % 24
+    hour = ((df["time"] + int(tz_offset * 3600)) // 3600) % 24
     df["hour"] = hour.astype("int8")
     df["is_off"] = ((hour < off_start) | (hour >= off_end)).astype("int8")
     df["fail"] = (~df["success"]).astype("int8")

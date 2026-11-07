@@ -52,6 +52,19 @@ python src/export_alerts.py --es http://localhost:9200 --index alerts-ueba   # s
 - `timestamp`: LANL dùng giây tương đối → cộng vào mốc `--base-date` (mặc định 2026-10-01Z).
 - `alert_id` là UUID cố định theo (user, cửa sổ) → đẩy lại ES không bị trùng.
 
+## 4b. Log thật từ ELK (Winlogbeat + Filebeat)
+```bash
+# 1) ECS -> bảng auth dạng LANL (đọc thẳng ES trên Ubuntu, hoặc --file <export.ndjson>)
+ELASTIC_PASSWORD=... python src/ecs_to_auth.py --es https://<ip-ubuntu>:9200 --since now-14d/d
+# 2) baseline 3 ngày đầu -> chấm phần còn lại -> reports/real_report.md, reports/alerts_real.json
+python src/score_real.py --baseline-days 3 [--labels attacks.csv] [--es https://<ip>:9200]
+```
+- Windows: 4624/4625/4648/4634/4647/4768/4769/4776 → `user@DOMAIN`, `LogonType`, Kerberos/NTLM/Negotiate.
+- Linux: sshd/login trong `system.auth` → `user@HOST`, auth `SSH-key`/`SSH-password`, logon `RemoteInteractive`.
+- Mặc định `--mode local`: học "bình thường" của chính môi trường lab (UEBA thực tế); `--mode lanl` dùng model LANL để so sánh.
+- `attacks.csv` (`user,start,end`, ISO có múi giờ) ghi các lần tự tấn công trong lab để đo P/R/F1.
+- Windows console: đặt `PYTHONIOENCODING=utf-8` để in được tiếng Việt.
+
 ## 5. Ghi chú phương pháp (dùng khi viết báo cáo)
 - Chia train/val/test **theo thời gian**, không shuffle. Ngưỡng cảnh báo = percentile điểm train (không nhìn nhãn); cột `best_f1` chỉ để tham khảo.
 - Mặc định train **có** lẫn cửa sổ red team (giống thực tế). `train.py --clean-train` để so sánh với baseline sạch.

@@ -80,6 +80,9 @@ def validate(alerts):
     except ImportError:
         print("  (chưa cài jsonschema – bỏ qua kiểm tra schema)")
         return
+    if not SCHEMA.exists():
+        print(f"  (không thấy {SCHEMA} – bỏ qua kiểm tra schema)")
+        return
     schema = load_json(SCHEMA)
     for a in alerts:
         jsonschema.validate(a, schema)
