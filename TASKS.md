@@ -1,25 +1,28 @@
 # Checklist công việc
 
-## Người A – Data & ML (`ml/`)
-- [ ] A1 Tải, làm sạch, chọn subset LANL (rồi CERT)
-- [ ] A2 Feature engineering theo user × giờ/ngày
-- [ ] A3 Baseline thống kê (z-score, IQR, peer group)
-- [ ] A4 Train Isolation Forest, Autoencoder; tinh chỉnh
-- [ ] A5 Bộ phân loại người thật / bot
-- [ ] A6 Đánh giá: Precision/Recall/F1, ROC-AUC, PR-AUC, ablation
-- [ ] A7 Bảng mapping MITRE ATT&CK (`ml/src/mitre_mapping.json`)
-- [ ] A8 Xuất `alerts.json` đúng schema, đẩy vào Elasticsearch
+## Dữ liệu & ML (`ml/`)
+- [x] Tải LANL (ngày 0–29, đủ 749 sự kiện red team) và CERT r4.2; kiểm tra chất lượng dữ liệu
+- [x] Feature theo user × ngày (LANL: xác thực, mới lạ, cạnh mới, fan-in, độ hiếm tần suất; CERT: logon/USB/file/email/web, độ hiếm domain, cửa sổ 7/30 ngày)
+- [x] Baseline thống kê (self + peer z-score)
+- [x] ML không giám sát: ECOD, Isolation Forest, Autoencoder; chống đầu độc baseline (cách ly)
+- [x] Bộ phân loại người / máy (phân biệt loại tài khoản; KHÔNG phát hiện được tài khoản bị chiếm)
+- [x] Đánh giá train/val/test theo thời gian, test chưa từng nhìn; sửa rò nhãn CERT
+- [x] MITRE ATT&CK cho cảnh báo ML
 
-## Người B – Platform, Agent, Web (`platform/`)
-- [ ] B1 Docker Compose Wazuh/Elastic Stack
-- [ ] B2 Pipeline nạp log vào Elasticsearch, index mapping
-- [ ] B3 Rule Sigma-style / Wazuh rule
-- [ ] B4 AI Agent LangChain + tools + output JSON
-- [ ] B5 API FastAPI
-- [ ] B6 Dashboard (Kibana hoặc React)
-- [ ] B7 Demo end-to-end
+## Nền tảng SOC (`soc/`)
+- [x] Elastic Stack 9.5.5 bật bảo mật (HTTPS, user quyền tối thiểu, token Kibana)
+- [x] Lớp 1: engine + luật Sigma (tương quan v2, IOC placeholder), ngưỡng không nhãn, đánh giá
+- [x] Lớp 4: điểm rủi ro theo thực thể (hệ số độ ồn luật), incident, mức độ theo thứ hạng
+- [x] Nạp cảnh báo / incident / sự kiện vào Elasticsearch
+- [x] ~~Lớp 5: AI agent LLM~~ – đã thử (Qwen3 4B cục bộ đúng 9/20, kém mốc 14/20) → bỏ (đã xoá code + Ollama)
+- [x] Lớp 5: tái dựng chuỗi tấn công LANL (đồ thị xác thực) + dòng thời gian nội gián CERT, có chấm điểm
+- [x] Lớp 5: playbook SOAR tất định, đề xuất ứng phó gắn MITRE D3FEND (ánh xạ chính thức)
+- [x] Web app SOC: dashboard, hàng đợi incident, MITRE, bằng chứng, kết luận, duyệt hành động, IOC, kiểm toán
+- [x] Bảo mật web app + kiểm thử (`soc.api.smoke_test` 17/17)
+- [x] Demo replay từng ngày cho cả LANL và CERT (workflow B7–B15) + vòng phản hồi IOC (`soc.replay`)
+- [x] Độ tin cậy chuỗi tấn công (không nhãn) → giảm đề xuất chặn máy ở incident lành tính 54/77 → 22/77
+- [ ] Tập demo end-to-end trên web (duyệt IOC bằng tay) + quay video
 
-## Chung
-- [ ] Chốt schema alert (tuần 1)
-- [ ] Ghép nối end-to-end (tuần 4)
-- [ ] Báo cáo + slide + tập bảo vệ (tuần 5)
+## Báo cáo
+- [ ] Viết `report/` (chương 1–7) từ kết quả trong `ml/README.md` và `soc/README.md`
+- [ ] Slide + tập bảo vệ

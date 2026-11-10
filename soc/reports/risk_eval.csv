@@ -1,0 +1,15 @@
+dataset,mode,split,budget_per_day,decay,ml_weight,ml_floor,user_days_hit,user_days,accounts_hit,accounts,incidents_per_day
+lanl,rules,val,25,0.5,20,0.95,17,134,10,97,24.2
+lanl,rules,test,25,0.5,20,0.95,3,34,1,26,20.9
+lanl,ml,val,25,0.5,20,0.99,29,134,21,97,25.0
+lanl,ml,test,25,0.5,20,0.99,10,34,4,26,25.0
+lanl,both,val,25,0.5,40,0.99,31,134,21,97,25.0
+lanl,both,test,25,0.5,40,0.99,9,34,4,26,25.0
+lanl,both+hosts,val,25,0.85,20,0.99,124,134,96,97,36.5
+lanl,both+hosts,test,25,0.85,20,0.99,32,34,26,26,38.6
+cert,rules,val,5,0.5,20,0.95,35,303,12,24,5.0
+cert,rules,test,5,0.5,20,0.95,19,624,12,52,5.0
+cert,ml,val,5,0.5,20,0.99,53,303,16,24,5.0
+cert,ml,test,5,0.5,20,0.99,85,624,35,52,5.0
+cert,both,val,5,0.5,80,0.99,53,303,15,24,5.0
+cert,both,test,5,0.5,80,0.99,81,624,34,52,5.0

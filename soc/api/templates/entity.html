@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% from "_macros.html" import feed, sev, mitre, truth with context %}
+{% block title %}{{ entity }}{% endblock %}
+{% block body %}
+{% set days = per_day|length %}
+<div class="page-head">
+  <div>
+    <a class="crumb" href="/incidents">← Incidents</a>
+    <h1>{{ entity.removeprefix('host:') }}</h1>
+    <p>Behaviour profile of this {{ kind }}: {{ alerts|length }} detection{{ 's' if alerts|length != 1 }} over {{ days }} day{{ 's' if days != 1 }},
+       part of {{ incidents|length }} incident{{ 's' if incidents|length != 1 }}.</p>
+  </div>
+</div>
+
+{% if focus %}
+<section class="block">
+  <header><h2>Normal vs {{ focus.timestamp[:10] }}</h2>
+    <p>the day machine learning found most unusual (score {{ '%.3f' % focus.anomaly_score }}) – grey = this {{ kind }}'s own median over the previous {{ focus.features.baseline._days }} days</p></header>
+  <div class="compare">
+  {% for c in compare %}
+    <div class="cmp {{ 'hot' if c.hot }}">
+      <span class="k">{{ c.label[:1]|upper ~ c.label[1:] }}</span>
+      <span class="bars"><i class="base" data-w="{{ c.wb }}"></i><i class="today" data-w="{{ c.wt }}"></i></span>
+      <span class="v">normal {{ '%g' % (c.base|round(2)) }} → <b>{{ '%g' % (c.today|round(2)) }}</b></span>
+    </div>
+  {% endfor %}
+  </div>
+  {% if focus.features.top_reasons %}<p class="muted small mt">Main reasons: {% for r in focus.features.top_reasons %}{{ reason_text(r) }}{{ '; ' if not loop.last }}{% endfor %}.</p>{% endif %}
+</section>
+{% endif %}
+
+<section class="block">
+  <header><h2>Detections over time</h2></header>
+  <div class="chart" data-chart="perday-entity"></div>
+  <script type="application/json" id="entity-days">{{ per_day | tojson }}</script>
+  <div class="legend"><span><i class="rule"></i>Sigma rules</span><span><i class="ml"></i>Machine learning</span></div>
+</section>
+
+<section class="block">
+  <header><h2>Incidents</h2></header>
+  {{ feed(incidents, show_truth, VERDICTS) }}
+</section>
+
+<section class="block">
+  <details><summary>All {{ alerts|length }} detections</summary>
+  <table class="tbl mt"><thead><tr><th>Time</th><th>Source</th><th>Detection</th><th>Severity</th><th>ATT&amp;CK</th><th>Incident</th>{% if show_truth %}<th>Label</th>{% endif %}</tr></thead><tbody>
+  {% for x in alerts %}<tr><td>{{ x.timestamp[:16]|replace('T', ' ') }}</td><td><span class="tag {{ x.source }}">{{ x.source|upper }}</span></td><td>{{ x.rule_title }}{% if x.features.count and x.features.count > 1 %} <span class="tag" title="Repeated detections merged (same rule, account, host and day)">×{{ x.features.count }}</span>{% endif %}</td><td>{{ sev(x.severity) }}</td><td>{{ mitre(x.mitre_ids) }}</td>
+  <td>{% if x.incident_id %}<a href="/incidents/{{ x.incident_id }}" class="mono">{{ x.incident_id }}</a>{% endif %}</td>{% if show_truth %}<td>{{ truth(x, show_truth) }}</td>{% endif %}</tr>{% endfor %}
+  </tbody></table></details>
+</section>
+{% endblock %}

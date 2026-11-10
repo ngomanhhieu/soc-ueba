@@ -1,0 +1,8 @@
+{
+ "incidents": 387,
+ "insider_incidents": 39,
+ "insider_with_new_exfil_step": 0.5897435897435898,
+ "insider_median_new_steps": 3.0,
+ "benign_with_new_exfil_step": 0.09482758620689655,
+ "benign_median_new_steps": 0.0
+}

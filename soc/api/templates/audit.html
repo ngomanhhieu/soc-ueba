@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Audit log{% endblock %}
+{% block body %}
+<div class="page-head"><div>
+  <h1>Audit log</h1>
+  <p>Every sign-in, verdict, approved or rejected action, IOC change and demo run. The web app can only
+     append to this log – it cannot edit or delete entries.</p>
+</div></div>
+<table class="tbl"><thead><tr><th>When</th><th>Who</th><th>Action</th><th>Target</th><th>Result</th><th>Details</th></tr></thead><tbody>
+{% for e in items %}<tr><td>{{ e['@timestamp'][:19]|replace('T', ' ') }}</td><td>{{ e.actor }} <span class="faint small">{{ e.actor_type }}</span></td><td>{{ e.action|replace('_', ' ') }}</td><td class="mono">{{ e.target }}</td>
+<td><span class="tag {{ 'st-closed' if e.outcome == 'success' else 'truth-yes' }}">{{ e.outcome }}</span></td>
+<td>{% if e.detail %}<details><summary>show</summary><pre>{{ e.detail | tojson(indent=1) }}</pre></details>{% endif %}</td></tr>{% endfor %}
+</tbody></table>
+{% endblock %}

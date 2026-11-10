@@ -1,1 +1,50 @@
-{}
+{
+  "_note": "A7 – Ánh xạ feature bất thường → MITRE ATT&CK (Enterprise). Kiểm tra lại ID trên attack.mitre.org trước khi đưa vào báo cáo. Thứ tự = độ ưu tiên khi nhiều lý do cùng xuất hiện.",
+  "rules": [
+    {
+      "id": "lateral_new_hosts",
+      "when_any": ["n_new_dst_comp", "new_dst_ratio", "n_dst_comp", "n_new_src_events", "new_src_max_fanin", "n_new_edge", "n_new_edge_src_new", "src_max_fanin"],
+      "tactic": "Lateral Movement",
+      "technique_id": "T1021",
+      "technique_name": "Remote Services",
+      "description": "Tài khoản xác thực tới nhiều máy đích mới/lạ so với lịch sử – dấu hiệu di chuyển ngang."
+    },
+    {
+      "id": "pass_the_hash_ntlm",
+      "when_any": ["ntlm_ratio", "new_src_ntlm_events"],
+      "tactic": "Lateral Movement",
+      "technique_id": "T1550.002",
+      "technique_name": "Use Alternate Authentication Material: Pass the Hash",
+      "description": "Tỉ lệ xác thực NTLM tăng bất thường, thường gặp khi dùng hash đánh cắp."
+    },
+    {
+      "id": "brute_force_failures",
+      "when_any": ["fail_ratio"],
+      "tactic": "Credential Access",
+      "technique_id": "T1110",
+      "technique_name": "Brute Force",
+      "description": "Tỉ lệ đăng nhập thất bại cao bất thường."
+    },
+    {
+      "id": "remote_system_discovery",
+      "when_any": ["max_per_minute", "n_events"],
+      "tactic": "Discovery",
+      "technique_id": "T1018",
+      "technique_name": "Remote System Discovery",
+      "description": "Số lần xác thực/phút bùng nổ – giống công cụ tự động quét máy trong mạng."
+    },
+    {
+      "id": "valid_accounts_unusual",
+      "when_any": ["unusual_hour_ratio", "n_new_src_comp", "n_src_comp", "remote_ratio", "n_dst_user"],
+      "tactic": "Defense Evasion / Persistence",
+      "technique_id": "T1078",
+      "technique_name": "Valid Accounts",
+      "description": "Tài khoản hợp lệ dùng ở giờ lạ hoặc từ máy nguồn lạ – nghi bị chiếm quyền."
+    }
+  ],
+  "default": {
+    "tactic": "Defense Evasion / Persistence",
+    "technique_id": "T1078",
+    "technique_name": "Valid Accounts"
+  }
+}

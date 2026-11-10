@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% from "_macros.html" import sev, mitre, truth, status with context %}
+{% block title %}{{ inc.entity }}{% endblock %}
+{% block body %}
+{% set pb = inc.playbook or {} %}
+<div class="inc-head">
+  <a class="crumb" href="/incidents">← Incidents</a>
+  <div class="chips">{{ sev(inc.severity) }}<span class="tag">{{ DATASET_LABEL.get(inc.dataset) }}</span>
+    <span class="faint small mono">{{ inc.incident_id }}</span>{{ truth(inc, show_truth) }}</div>
+  <p class="sentence">{{ headline(inc) }}</p>
+  <div class="meta">
+    <span><a href="/entity/{{ inc.entity }}">{{ inc.entity }}</a> · {{ 'host' if inc.entity_type == 'host' else ('employee' if inc.dataset == 'cert' else 'account') }} profile →</span>
+    <span>{{ inc.opened_at[:10] }}{% if inc.last_seen[:10] != inc.opened_at[:10] %} → {{ inc.last_seen[:10] }}{% endif %}</span>
+    <span>{{ inc.n_alerts }} detections</span>
+    <span class="stepper">
+      <span class="{{ 'done' if inc.status in ('investigating', 'closed') else 'cur' }}">New</span><em></em>
+      <span class="{{ 'done' if inc.status == 'closed' else 'cur' if inc.status == 'investigating' }}">Investigating</span><em></em>
+      <span class="{{ 'done' if inc.status == 'closed' }}">Closed</span>
+    </span>
+  </div>
+</div>
+
+<div class="inc-grid">
+<div>
+  {# ---------------- câu chuyện tấn công #}
+  {% if inc.dataset == 'lanl' and chain.attacker_hosts %}
+  <section class="block">
+    <header><h2>Attack story</h2><p>rebuilt from the sign-in graph, days {{ chain.window_days[0] }}–{{ chain.window_days[1] }}</p></header>
+    <div class="facts stats">
+      <div class="stat crit"><div class="n">{{ chain.compromised_accounts|length }}</div><div class="l">accounts used</div></div>
+      <div class="stat"><div class="n">{{ chain.touched_hosts|length }}</div><div class="l">hosts reached</div></div>
+      <div class="stat"><div class="n">{{ chain.blast_radius_hosts }}</div><div class="l">hosts at risk next</div></div>
+      <div class="stat"><div class="n conf-{{ chain.confidence_level }}">{{ chain.confidence_level|capitalize }}</div><div class="l">confidence</div></div>
+    </div>
+    <div class="graph">{{ chain_svg }}</div>
+    <div class="graph-legend">
+      <span><i class="src"></i>attacker host (thick = main jump host <b>{{ chain.main_host }}</b>)</span>
+      <span><i class="ntlm"></i>NTLM sign-in – typical of Pass-the-Hash</span><span><i></i>other sign-in</span>
+      <span>{{ mitre(chain.mitre_ids) }}</span>
+    </div>
+    <details class="mt"><summary>Step-by-step timeline ({{ chain.timeline|length }}{% if chain.n_edges > chain.timeline|length %} of {{ chain.n_edges }}{% endif %} sign-in paths)</summary>
+      <table class="tbl mt"><thead><tr><th>Day</th><th>Time</th><th>Account</th><th>From → to</th><th>Auth</th><th class="num">Times</th><th>ATT&amp;CK</th></tr></thead><tbody>
+      {% for e in chain.timeline %}<tr><td>{{ e.day }}</td><td>{{ '%02d:%02d' % ((e.t % 86400) // 3600, (e.t % 3600) // 60) }}</td>
+        <td><a href="/entity/{{ e.user }}">{{ e.user }}</a></td><td class="mono">{{ e.src }} → {{ e.dst }}</td><td>{{ e.auth }}</td>
+        <td class="num">{{ e.n }}</td><td>{{ mitre([e.mitre]) }}</td></tr>{% endfor %}
+      </tbody></table></details>
+  </section>
+  {% elif inc.dataset == 'cert' and chain.steps %}
+  <section class="block">
+    <header><h2>Attack story</h2><p>{{ chain.window[0] }} → {{ chain.window[1] }} · highlighted = new for this employee (not seen in the previous 30 days)</p></header>
+    <div class="phases">
+    {% for name, desc in PHASES %}{% set items = phases.get(name, []) %}
+      <div class="phase {{ phase_color(name) }} {{ 'off' if not items }}">
+        <h4>{{ name }} <span class="faint">{{ items|selectattr('new')|list|length }} new</span></h4>
+        <div class="desc">{{ desc }}</div>
+        {% for s in items %}
+        <div class="ev {{ 'is-new' if s.new }}">
+          <div class="d">{{ s.date }} · {{ s.first }}{% if s.new %}<span class="tag new">NEW</span>{% endif %}</div>
+          <div class="n">{{ s.name }}{% if s.count > 1 %} <span class="faint">×{{ s.count }}</span>{% endif %}</div>
+          {% if s.examples %}<div class="x">{{ s.examples|join(', ') }}</div>{% endif %}
+        </div>
+        {% else %}<div class="ev faint">nothing</div>{% endfor %}
+      </div>
+    {% endfor %}
+    </div>
+    <div class="chips mt">{{ mitre(chain.mitre_ids) }}</div>
+  </section>
+  {% endif %}
+
+  {# ---------------- vì sao bị phát hiện #}
+  <section class="block">
+    <header><h2>Why it was flagged</h2><p>{{ why|length }} kind{{ 's' if why|length != 1 }} of detection</p></header>
+    <div class="why-list">
+    {% for w in why %}
+      <div class="why-row">
+        <span class="tag {{ w.source }}">{{ 'ML' if w.source == 'ml' else 'Rule' }}</span>
+        <div><div class="t">{{ w.title }}</div>
+          {% if w.reasons %}<ul>{% for r in w.reasons[:5] %}<li>{{ reason_text(r) }}</li>{% endfor %}</ul>{% endif %}
+          <div class="chips mt">{{ mitre(w.mitre|sort) }}{% if show_truth and w.truth %}<span class="tag truth-yes">labelled malicious</span>{% endif %}</div></div>
+        <div class="cnt">{{ w.n }}×<br>{{ w.first[:10] }}{% if w.last[:10] != w.first[:10] %}<br>→ {{ w.last[:10] }}{% endif %}</div>
+      </div>
+    {% endfor %}
+    </div>
+  </section>
+
+  {# ---------------- bằng chứng #}
+  <section class="block">
+    <header><h2>Evidence</h2><p>{{ ev.get('total_events', 0) }} raw events kept for this investigation</p></header>
+    <div class="chart" data-chart="hourly"></div>
+    <script type="application/json" id="hourly-data">{{ ev.get('per_hour', {}) | tojson }}</script>
+    <div class="tops">
+    {% for k, v in ev.items() if v is mapping and k != 'per_hour' and v %}
+      <div><h3>{{ EV_LABEL.get(k, k) }}</h3><ul>{% for name, n in v.items() %}<li><code>{{ name }}</code><span>{{ n }}</span></li>{% endfor %}</ul></div>
+    {% endfor %}
+    </div>
+    <details class="mt"><summary>All {{ alerts|length }} detections (raw)</summary>
+      <table class="tbl mt"><thead><tr><th>Time</th><th>Source</th><th>Detection</th><th>Severity</th><th class="num">Score</th><th>Details</th>{% if show_truth %}<th>Label</th>{% endif %}</tr></thead><tbody>
+      {% for x in alerts %}<tr><td>{{ x.timestamp[:16]|replace('T', ' ') }}</td><td><span class="tag {{ x.source }}">{{ x.source|upper }}</span></td><td>{{ x.rule_title }}{% if x.features.count and x.features.count > 1 %} <span class="tag" title="Repeated detections merged (same rule, account, host and day)">×{{ x.features.count }}</span>{% endif %}</td><td>{{ sev(x.severity) }}</td>
+        <td class="num">{{ '%.3f' % x.anomaly_score }}</td><td><details><summary>show</summary><pre>{{ x.features | tojson(indent=1) }}</pre></details></td>
+        {% if show_truth %}<td>{{ truth(x, show_truth) }}</td>{% endif %}</tr>{% endfor %}
+      </tbody></table></details>
+  </section>
+</div>
+
+{# ---------------- cột phải: phản ứng #}
+<aside class="rail">
+  <div class="panel">
+    <h2>Response plan</h2>
+    <p class="sub">{{ pb.playbook_id }} · {{ pb.name }} – ran automatically</p>
+    <ul class="checklist">
+      {% for s in pb.steps or [] %}<li><svg class="icon"><use href="#i-check"/></svg><div>{{ s.name }}<span>{{ s.result }}</span></div></li>{% endfor %}
+    </ul>
+    <h3 class="mt">Proposed actions</h3>
+    {% for act in pb.recommended_actions or [] %}
+      {% set done = (inc.actions or []) | selectattr('action', 'equalto', act.action) | selectattr('target', 'equalto', act.target) | list %}
+      <div class="act">
+        <div class="t">{{ ACTION_LABEL.get(act.action, act.action) }} <span class="mono faint">{{ act.target }}</span></div>
+        <div class="why">{{ act.reason }}</div>
+        <div class="d3">MITRE D3FEND <b>{{ act.d3fend.id }}</b> {{ act.d3fend.name }} · counters {{ act.d3fend.technique }}</div>
+        {% if act.targets %}<details><summary class="small">List ({{ act.targets|length }})</summary><p class="small mono">{{ act.targets|join(', ') }}</p></details>{% endif %}
+        <div class="row">
+        {% if done %}<span class="done {{ 'rej' if done[-1].decision != 'approve' }}">{{ 'Approved' if done[-1].decision == 'approve' else 'Rejected' }} by {{ done[-1].by }}</span>
+        {% elif user.role == 'lead' %}
+          <form method="post" action="/incidents/{{ inc.incident_id }}/approve" class="inline">
+            <input type="hidden" name="csrf" value="{{ csrf }}"><input type="hidden" name="idx" value="{{ loop.index0 }}">
+            <button class="btn sm ok" name="decision" value="approve">Approve</button>
+            <button class="btn sm danger" name="decision" value="reject">Reject</button></form>
+        {% else %}<span class="faint small">waiting for a lead to approve</span>{% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="panel">
+    <h2>Your verdict</h2>
+    {% if inc.verdict %}<p class="sub"><span class="verdict-now v-{{ inc.verdict }}">{{ VERDICTS[inc.verdict] }}</span> – {{ inc.verdict_by }}, {{ inc.verdict_at[:16]|replace('T', ' ') }}</p>
+    {% else %}<p class="sub">Was this a real attack?</p>{% endif %}
+    <form method="post" action="/incidents/{{ inc.incident_id }}/verdict">
+      <input type="hidden" name="csrf" value="{{ csrf }}">
+      <div class="verdicts">
+      {% for k, v in VERDICTS.items() %}<label><input type="radio" name="verdict" value="{{ k }}" {{ 'checked' if inc.verdict == k or (not inc.verdict and loop.first) }}><span>{{ v }}</span></label>{% endfor %}
+      </div>
+      <textarea name="notes" rows="3" maxlength="2000" placeholder="Investigation notes">{{ inc.notes or '' }}</textarea>
+      <button class="btn block mt">Save verdict</button>
+    </form>
+  </div>
+</aside>
+</div>
+{% endblock %}

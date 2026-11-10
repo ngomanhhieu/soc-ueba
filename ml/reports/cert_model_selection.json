@@ -1,0 +1,10 @@
+{
+  "validation_pr_auc": {
+    "stat_score": 0.02692375450823662,
+    "iforest_score": 0.14946234870403668,
+    "ae_score": 0.1302106035462648,
+    "ensemble_score": 0.10343775355505862,
+    "if_ae_score": 0.1619739223240322
+  },
+  "selected": "if_ae_score"
+}

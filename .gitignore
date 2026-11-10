@@ -6,14 +6,17 @@ ml/models/*
 *.parquet
 *.csv
 !schema/*.csv
+!ml/reports/*.csv
+!soc/reports/*.csv
+ml/reports/*.log
+soc/reports/*.log
 # python
 __pycache__/
 .venv/
 venv/
 .ipynb_checkpoints/
-# env & docker
+# env & secrets
 .env
-platform/**/data/
 node_modules/
 .DS_Store
 !.gitkeep

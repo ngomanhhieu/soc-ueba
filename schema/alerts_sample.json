@@ -10,9 +10,16 @@
     "anomaly_score": 0.87,
     "is_human_prob": 0.12,
     "severity": "high",
-    "mitre": {"tactic": "Lateral Movement", "technique_id": "T1021", "technique_name": "Remote Services"},
-    "features": {"login_per_hour": 42, "distinct_dst": 17, "fail_ratio": 0.3},
-    "agent_analysis": null
+    "mitre": {
+      "tactic": "Lateral Movement",
+      "technique_id": "T1021",
+      "technique_name": "Remote Services"
+    },
+    "features": {
+      "login_per_hour": 42,
+      "distinct_dst": 17,
+      "fail_ratio": 0.3
+    }
   },
   {
     "alert_id": "a-0002",
@@ -25,8 +32,14 @@
     "anomaly_score": 0.55,
     "is_human_prob": 0.8,
     "severity": "medium",
-    "mitre": {"tactic": "Initial Access", "technique_id": "T1078", "technique_name": "Valid Accounts"},
-    "features": {"login_per_hour": 5, "offhours_ratio": 1.0},
-    "agent_analysis": null
+    "mitre": {
+      "tactic": "Initial Access",
+      "technique_id": "T1078",
+      "technique_name": "Valid Accounts"
+    },
+    "features": {
+      "login_per_hour": 5,
+      "offhours_ratio": 1.0
+    }
   }
 ]

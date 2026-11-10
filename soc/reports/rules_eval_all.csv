@@ -1,0 +1,37 @@
+rule_id,rule,split,alerts,alerts_per_day,precision,malicious_user_days_hit,malicious_user_days,accounts_hit,accounts,dataset
+1d0b6c1e-0002-4a51-9e6b-0000000a0002,Brute force – nhiều lần đăng nhập thất bại vào 1 tài khoản từ 1 máy,train,14,2.0,0.0,0,13,0,7,lanl
+1d0b6c1e-0002-4a51-9e6b-0000000a0002,Brute force – nhiều lần đăng nhập thất bại vào 1 tài khoản từ 1 máy,val,344,28.67,0.0,0,134,0,97,lanl
+1d0b6c1e-0002-4a51-9e6b-0000000a0002,Brute force – nhiều lần đăng nhập thất bại vào 1 tài khoản từ 1 máy,test,196,19.6,0.0,0,34,0,26,lanl
+1d0b6c1e-0003-4a51-9e6b-0000000a0003,Password spraying – 1 máy thử đăng nhập thất bại vào nhiều tài khoản,train,4,0.57,0.0,0,13,0,7,lanl
+1d0b6c1e-0003-4a51-9e6b-0000000a0003,Password spraying – 1 máy thử đăng nhập thất bại vào nhiều tài khoản,val,6,0.5,0.0,0,134,0,97,lanl
+1d0b6c1e-0003-4a51-9e6b-0000000a0003,Password spraying – 1 máy thử đăng nhập thất bại vào nhiều tài khoản,test,8,0.8,0.0,0,34,0,26,lanl
+1d0b6c1e-0005-4a51-9e6b-0000000a0005,Pass-the-Hash – tài khoản người đăng nhập NTLM tới nhiều máy trong 1 giờ,train,18,2.57,0.111,3,13,1,7,lanl
+1d0b6c1e-0005-4a51-9e6b-0000000a0005,Pass-the-Hash – tài khoản người đăng nhập NTLM tới nhiều máy trong 1 giờ,val,28,2.33,0.464,9,134,7,97,lanl
+1d0b6c1e-0005-4a51-9e6b-0000000a0005,Pass-the-Hash – tài khoản người đăng nhập NTLM tới nhiều máy trong 1 giờ,test,9,0.9,0.0,0,34,0,26,lanl
+1d0b6c1e-0007-4a51-9e6b-0000000a0007,Di chuyển ngang – tài khoản người đăng nhập tới rất nhiều máy trong 1 giờ,train,16,2.29,0.0,0,13,0,7,lanl
+1d0b6c1e-0007-4a51-9e6b-0000000a0007,Di chuyển ngang – tài khoản người đăng nhập tới rất nhiều máy trong 1 giờ,val,29,2.42,0.103,4,134,2,97,lanl
+1d0b6c1e-0007-4a51-9e6b-0000000a0007,Di chuyển ngang – tài khoản người đăng nhập tới rất nhiều máy trong 1 giờ,test,14,1.4,0.071,1,34,1,26,lanl
+1d0b6c1e-0008-4a51-9e6b-0000000a0008,Nhiều tài khoản người đăng nhập từ cùng 1 máy trong 1 giờ,train,17,2.43,0.0,0,13,0,7,lanl
+1d0b6c1e-0008-4a51-9e6b-0000000a0008,Nhiều tài khoản người đăng nhập từ cùng 1 máy trong 1 giờ,val,20,1.67,0.0,0,134,0,97,lanl
+1d0b6c1e-0008-4a51-9e6b-0000000a0008,Nhiều tài khoản người đăng nhập từ cùng 1 máy trong 1 giờ,test,29,2.9,0.0,0,34,0,26,lanl
+ALL,Mọi luật,train,69,9.86,0.029,3,13,1,7,lanl
+ALL,Mọi luật,val,427,35.58,0.037,10,134,7,97,lanl
+ALL,Mọi luật,test,256,25.6,0.004,1,34,1,26,lanl
+7c2e9a40-0010-4b6d-8f21-0000000c0010,Rò dữ liệu qua USB – sao chép nhiều file ngoài giờ trong ngày,train,355,2.37,0.0,0,39,0,6,cert
+7c2e9a40-0010-4b6d-8f21-0000000c0010,Rò dữ liệu qua USB – sao chép nhiều file ngoài giờ trong ngày,val,146,2.35,0.034,5,303,2,24,cert
+7c2e9a40-0010-4b6d-8f21-0000000c0010,Rò dữ liệu qua USB – sao chép nhiều file ngoài giờ trong ngày,test,432,1.67,0.019,8,624,7,52,cert
+7c2e9a40-0011-4b6d-8f21-0000000c0011,Nhiều email ra ngoài có đính kèm trong ngày,train,229,1.53,0.0,0,39,0,6,cert
+7c2e9a40-0011-4b6d-8f21-0000000c0011,Nhiều email ra ngoài có đính kèm trong ngày,val,93,1.5,0.0,0,303,0,24,cert
+7c2e9a40-0011-4b6d-8f21-0000000c0011,Nhiều email ra ngoài có đính kèm trong ngày,test,387,1.49,0.0,0,624,0,52,cert
+7c2e9a40-0012-4b6d-8f21-0000000c0012,USB ngoài giờ + truy cập web cực hiếm cùng ngày (nghi đẩy dữ liệu ra ngoài),train,5,0.03,0.4,2,39,2,6,cert
+7c2e9a40-0012-4b6d-8f21-0000000c0012,USB ngoài giờ + truy cập web cực hiếm cùng ngày (nghi đẩy dữ liệu ra ngoài),val,24,0.39,1.0,24,303,11,24,cert
+7c2e9a40-0012-4b6d-8f21-0000000c0012,USB ngoài giờ + truy cập web cực hiếm cùng ngày (nghi đẩy dữ liệu ra ngoài),test,7,0.03,1.0,7,624,7,52,cert
+7c2e9a40-0013-4b6d-8f21-0000000c0013,Tải từ web cực hiếm + chép file .exe ra USB cùng ngày (nghi cài công cụ theo dõi),train,2,0.01,1.0,2,39,2,6,cert
+7c2e9a40-0013-4b6d-8f21-0000000c0013,Tải từ web cực hiếm + chép file .exe ra USB cùng ngày (nghi cài công cụ theo dõi),val,3,0.05,1.0,3,303,3,24,cert
+7c2e9a40-0013-4b6d-8f21-0000000c0013,Tải từ web cực hiếm + chép file .exe ra USB cùng ngày (nghi cài công cụ theo dõi),test,5,0.02,1.0,5,624,5,52,cert
+7c2e9a40-0014-4b6d-8f21-0000000c0014,Đang tìm việc + sao chép file ra USB cùng ngày (nhân viên sắp nghỉ lấy dữ liệu),train,3132,20.88,0.006,20,39,6,6,cert
+7c2e9a40-0014-4b6d-8f21-0000000c0014,Đang tìm việc + sao chép file ra USB cùng ngày (nhân viên sắp nghỉ lấy dữ liệu),val,1690,27.26,0.083,140,303,16,24,cert
+7c2e9a40-0014-4b6d-8f21-0000000c0014,Đang tìm việc + sao chép file ra USB cùng ngày (nhân viên sắp nghỉ lấy dữ liệu),test,7563,29.2,0.035,267,624,27,52,cert
+ALL,Mọi luật,train,3723,24.82,0.006,21,39,6,6,cert
+ALL,Mọi luật,val,1956,31.55,0.088,163,303,24,24,cert
+ALL,Mọi luật,test,8394,32.41,0.034,277,624,35,52,cert

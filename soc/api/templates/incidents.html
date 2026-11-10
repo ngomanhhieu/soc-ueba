@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from "_macros.html" import feed with context %}
+{% block title %}Incidents{% endblock %}
+{% macro opt(key, val, text) -%}
+{%- set q = dict(f) -%}{%- set _ = q.update({key: val}) -%}
+<a href="/incidents?{{ q | urlencode }}" class="{{ 'on' if f[key] == val }}">{{ text }}</a>
+{%- endmacro %}
+{% block body %}
+<div class="page-head">
+  <div>
+    <h1>Incidents</h1>
+    <p>Each incident is one user or host whose risk climbed to the top of the day. Read the sentence,
+       open it to see the attack story and the proposed response.</p>
+  </div>
+</div>
+<div class="filters">
+  <div class="seg">{{ opt('status', '', 'All') }}{{ opt('status', 'new', 'New') }}{{ opt('status', 'investigating', 'Investigating') }}{{ opt('status', 'closed', 'Closed') }}</div>
+  <div class="seg">{{ opt('severity', '', 'Any severity') }}{{ opt('severity', 'critical', 'Critical') }}{{ opt('severity', 'high', 'High') }}{{ opt('severity', 'medium', 'Medium') }}</div>
+  <div class="seg">{{ opt('dataset', '', 'Both datasets') }}{{ opt('dataset', 'lanl', 'LANL sign-ins') }}{{ opt('dataset', 'cert', 'CERT insider') }}</div>
+  <form class="search" method="get">
+    {% for k in ('status', 'severity', 'dataset') %}{% if f[k] %}<input type="hidden" name="{{ k }}" value="{{ f[k] }}">{% endif %}{% endfor %}
+    <input name="q" value="{{ f.q }}" placeholder="Search user, host, T1078, INC-…" maxlength="100">
+    <button class="btn ghost">Search</button>
+  </form>
+</div>
+<p class="muted small">{{ rows|length }} incident{{ 's' if rows|length != 1 }}, riskiest first</p>
+{{ feed(rows, show_truth, VERDICTS, peak) }}
+{% endblock %}

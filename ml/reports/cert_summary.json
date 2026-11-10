@@ -1,0 +1,59 @@
+{
+  "split_date": "2010-09-01",
+  "alert_model": "if_ae_score",
+  "user_level": {
+    "0.99": {
+      "alerts": 1400,
+      "alerts_per_day": 5.41,
+      "insiders_caught": 42,
+      "insiders_total": 52,
+      "by_scenario": {
+        "1": "22/22",
+        "2": "15/25",
+        "3": "5/5"
+      }
+    },
+    "0.995": {
+      "alerts": 646,
+      "alerts_per_day": 2.49,
+      "insiders_caught": 32,
+      "insiders_total": 52,
+      "by_scenario": {
+        "1": "22/22",
+        "2": "5/25",
+        "3": "5/5"
+      }
+    },
+    "0.999": {
+      "alerts": 156,
+      "alerts_per_day": 0.6,
+      "insiders_caught": 26,
+      "insiders_total": 52,
+      "by_scenario": {
+        "1": "20/22",
+        "2": "1/25",
+        "3": "5/5"
+      }
+    },
+    "top2/day": {
+      "alerts": 518,
+      "insiders_caught": 30,
+      "insiders_total": 52,
+      "by_scenario": {
+        "1": "20/22",
+        "2": "5/25",
+        "3": "5/5"
+      }
+    },
+    "top5/day": {
+      "alerts": 1294,
+      "insiders_caught": 38,
+      "insiders_total": 52,
+      "by_scenario": {
+        "1": "22/22",
+        "2": "11/25",
+        "3": "5/5"
+      }
+    }
+  }
+}
