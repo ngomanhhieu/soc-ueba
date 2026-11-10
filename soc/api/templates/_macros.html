@@ -1,0 +1,27 @@
+{% macro sev(s) %}<span class="sev sev-{{ s }}">{{ s }}</span>{% endmacro %}
+{% macro mitre(ids) %}{% for m in ids %}<a class="mitre" href="https://attack.mitre.org/techniques/{{ m | replace('.', '/') }}/" target="_blank" rel="noopener noreferrer" title="Open in MITRE ATT&amp;CK">{{ m }}</a>{% endfor %}{% endmacro %}
+{% macro truth(x, show) %}{% if show %}{% if x.ground_truth %}<span class="tag truth-yes">labelled malicious</span>{% else %}<span class="tag truth-no">label: benign</span>{% endif %}{% endif %}{% endmacro %}
+{% macro status(s) %}<span class="tag st-{{ s }}">{{ STATUS_LABEL.get(s, s) }}</span>{% endmacro %}
+
+{% macro feed(rows, show_truth, VERDICTS, peak=None, empty='No incidents match.') %}
+<div class="feed">
+{% for i in rows %}
+  {% set top = peak.get((i.dataset, i.entity_type), i.max_risk) if peak else i.max_risk %}
+  <a class="item {{ i.severity }}" href="/incidents/{{ i.incident_id }}">
+    <div class="what">{{ headline(i) }}</div>
+    <div class="meta">
+      {{ sev(i.severity) }}
+      <span>{{ i.entity }}</span>
+      <span>{{ DATASET_LABEL.get(i.dataset, i.dataset) }}</span>
+      <span>{{ i.opened_at[:10] }}{% if i.last_seen[:10] != i.opened_at[:10] %} → {{ i.last_seen[:10] }}{% endif %}</span>
+      <span>{{ i.n_alerts }} detection{{ 's' if i.n_alerts != 1 }}</span>
+      {{ truth(i, show_truth) }}
+    </div>
+    <div class="side-r">
+      <span class="meter" title="Risk relative to the riskiest incident of the same kind"><i data-w="{{ (100 * i.max_risk / (top or 1))|round|int }}"></i></span>
+      <span class="chips">{{ status(i.status) }}{% if i.verdict %}<span class="tag v-{{ i.verdict }}">{{ VERDICTS[i.verdict] }}</span>{% endif %}</span>
+    </div>
+  </a>
+{% else %}<p class="empty">{{ empty }}</p>{% endfor %}
+</div>
+{% endmacro %}

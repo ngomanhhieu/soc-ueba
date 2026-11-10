@@ -1,8 +1,10 @@
-pandas
-pyarrow
+pandas>=2.2
+pyarrow>=15
 numpy
-scikit-learn
+scikit-learn>=1.4
 matplotlib
 jupyter
-torch
+torch            # CPU: pip install torch --index-url https://download.pytorch.org/whl/cpu
 elasticsearch
+jsonschema
+joblib

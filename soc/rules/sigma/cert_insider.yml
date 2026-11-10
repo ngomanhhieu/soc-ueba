@@ -1,0 +1,144 @@
+# Luật Sigma cho insider threat (CERT r4.2). Mẫu hành vi lấy từ kiến thức insider threat công
+# khai (CERT/SEI, MITRE): rò dữ liệu qua USB ngoài giờ, gửi dữ liệu ra web/email ngoài, cài công
+# cụ theo dõi, nhân viên sắp nghỉ việc lấy dữ liệu. KHÔNG dùng danh sách domain/file từ answers/.
+# Field: user.name, host.name, event.action, event.offhours, event.weekend, file.extension,
+#        email.external_recipients, email.attachments, url.domain, url.org_popularity, url.category
+title: USB device connected outside working hours
+name: cert_usb_offhours
+id: 7c2e9a40-0001-4b6d-8f21-0000000c0001
+status: experimental
+logsource: {product: cert, service: device}
+detection:
+  selection:
+    event.action: Connect
+    event.offhours: true
+  condition: selection
+level: informational
+---
+title: File copied to removable media
+name: cert_file_copy
+id: 7c2e9a40-0002-4b6d-8f21-0000000c0002
+status: experimental
+logsource: {product: cert, service: file}
+detection:
+  selection:
+    file.extension|re: '.+'
+  condition: selection
+level: informational
+---
+title: File copied to removable media outside working hours
+name: cert_file_copy_offhours
+id: 7c2e9a40-0003-4b6d-8f21-0000000c0003
+status: experimental
+logsource: {product: cert, service: file}
+detection:
+  selection:
+    event.offhours: true
+  condition: selection
+level: informational
+---
+title: Executable (.exe) copied to removable media
+name: cert_exe_to_removable
+id: 7c2e9a40-0004-4b6d-8f21-0000000c0004
+status: experimental
+logsource: {product: cert, service: file}
+detection:
+  selection:
+    file.extension: exe
+  condition: selection
+level: informational
+---
+title: Visit to a very rare domain (< 1% of employees ever visited)
+name: cert_rare_domain
+id: 7c2e9a40-0005-4b6d-8f21-0000000c0005
+status: experimental
+logsource: {product: cert, service: http}
+detection:
+  selection:
+    url.org_popularity|lt: 0.01
+  condition: selection
+level: informational
+---
+title: Visit to a job-search site
+name: cert_job_search
+id: 7c2e9a40-0006-4b6d-8f21-0000000c0006
+status: experimental
+logsource: {product: cert, service: http}
+detection:
+  selection:
+    url.category: job
+  condition: selection
+level: informational
+---
+title: Email with attachment sent outside the company
+name: cert_external_email_attach
+id: 7c2e9a40-0007-4b6d-8f21-0000000c0007
+status: experimental
+logsource: {product: cert, service: email}
+detection:
+  selection:
+    email.external_recipients|gte: 1
+    email.attachments|gte: 1
+  condition: selection
+level: informational
+---
+title: USB exfiltration – many files copied after hours in one day
+id: 7c2e9a40-0010-4b6d-8f21-0000000c0010
+status: experimental
+correlation:
+  type: event_count
+  rules: [cert_file_copy_offhours]
+  group-by: [user.name]
+  timespan: 1d
+  condition: {gte: 10}
+  context: [host.name]
+tags: [attack.exfiltration, attack.t1052.001]
+level: medium
+---
+title: Many external emails with attachments in one day
+id: 7c2e9a40-0011-4b6d-8f21-0000000c0011
+status: experimental
+correlation:
+  type: event_count
+  rules: [cert_external_email_attach]
+  group-by: [user.name]
+  timespan: 1d
+  condition: {gte: 10}
+tags: [attack.exfiltration, attack.t1048.003]
+level: medium
+---
+title: After-hours USB + very rare website on the same day (possible data exfiltration)
+id: 7c2e9a40-0012-4b6d-8f21-0000000c0012
+status: experimental
+correlation:
+  type: temporal
+  rules: [cert_usb_offhours, cert_rare_domain]
+  group-by: [user.name]
+  timespan: 1d
+  context: [url.domain, host.name]
+tags: [attack.exfiltration, attack.t1052.001, attack.t1567]
+level: high
+---
+title: Very rare website + .exe copied to USB on the same day (possible spyware install)
+id: 7c2e9a40-0013-4b6d-8f21-0000000c0013
+status: experimental
+correlation:
+  type: temporal
+  rules: [cert_rare_domain, cert_exe_to_removable]
+  group-by: [user.name]
+  timespan: 1d
+  context: [url.domain, file.name]
+tags: [attack.collection, attack.t1056.001, attack.lateral_movement, attack.t1570]
+level: high
+---
+title: Job searching + files copied to USB on the same day (leaver taking data)
+id: 7c2e9a40-0014-4b6d-8f21-0000000c0014
+status: experimental
+correlation:
+  type: temporal
+  rules: [cert_job_search, cert_file_copy]
+  group-by: [user.name]
+  timespan: 1d
+  context: [url.domain, host.name]
+tags: [attack.exfiltration, attack.t1052.001]
+level: medium

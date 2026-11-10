@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Day-by-day demo{% endblock %}
+{% block body %}
+<div class="page-head"><div>
+  <h1>Day-by-day demo</h1>
+  <p>Replays the test period as if the SOC were running live. Each step ingests a new day, runs Sigma rules
+     and machine learning, updates risk and incidents, runs the playbooks and loads everything into
+     Elasticsearch. Try it on LANL: approve "Block source host" for C17693, then step forward – the IOC rule
+     starts catching it.</p>
+</div>
+<span class="tag" id="rp-state">{{ 'Running: ' ~ st.action if st.running else ('Idle' if st.exit_code in (none, 0) else 'Failed (code ' ~ st.exit_code ~ ')') }}</span>
+</div>
+<div class="replay">
+{% for ds, name, step, span in (('lanl', 'LANL – stolen accounts', 'Next day →', 'test days 20–29 · red-team attack inside'), ('live', 'LANL – new days', 'Next day →', 'days 30–57 · never seen by the models, no attack labels'), ('cert', 'CERT – insider threat', 'Next 7 days →', 'test Sep 2010 – May 2011')) %}
+  <div class="panel">
+    <h2>{{ name }}</h2>
+    <p class="sub">{{ span }} · processed up to</p>
+    <div class="clock">{{ st.day[ds] }}</div>
+    <div class="row">
+      <form method="post" action="/replay/{{ ds }}_reset" class="inline"><input type="hidden" name="csrf" value="{{ csrf }}"><button class="btn ghost rp-btn" {{ 'disabled' if st.running }}>Reset to start</button></form>
+      <form method="post" action="/replay/{{ ds }}_next" class="inline"><input type="hidden" name="csrf" value="{{ csrf }}"><button class="btn rp-btn" {{ 'disabled' if st.running }}>{{ step }}</button></form>
+      <form method="post" action="/replay/{{ ds }}_restore" class="inline"><input type="hidden" name="csrf" value="{{ csrf }}"><button class="btn ghost rp-btn" {{ 'disabled' if st.running }}>Restore full data</button></form>
+    </div>
+  </div>
+{% endfor %}
+</div>
+<section class="block">
+  <header><h2>Task log</h2></header>
+  <pre class="log" id="rp-log" data-running="{{ 'yes' if st.running else 'no' }}">{{ st.log | join('\n') }}</pre>
+</section>
+{% endblock %}

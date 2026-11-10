@@ -1,0 +1,8 @@
+-r ml/requirements.txt
+# nền tảng SOC (soc/)
+pyyaml>=6            # luật Sigma
+fastapi>=0.115       # web app
+uvicorn[standard]
+python-multipart     # form
+itsdangerous         # cookie phiên ký số
+jinja2

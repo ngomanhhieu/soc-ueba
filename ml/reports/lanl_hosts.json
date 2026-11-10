@@ -1,0 +1,28 @@
+{
+  "val": {
+    "redteam_user_days": 134,
+    "accounts": 97,
+    "user_days@5hosts/day": 117,
+    "accounts@5hosts/day": 95,
+    "users_listed@5hosts/day": 643,
+    "user_days@10hosts/day": 118,
+    "accounts@10hosts/day": 95,
+    "users_listed@10hosts/day": 964,
+    "user_days@25hosts/day": 120,
+    "accounts@25hosts/day": 96,
+    "users_listed@25hosts/day": 1603
+  },
+  "test": {
+    "redteam_user_days": 34,
+    "accounts": 26,
+    "user_days@5hosts/day": 25,
+    "accounts@5hosts/day": 22,
+    "users_listed@5hosts/day": 478,
+    "user_days@10hosts/day": 25,
+    "accounts@10hosts/day": 22,
+    "users_listed@10hosts/day": 786,
+    "user_days@25hosts/day": 27,
+    "accounts@25hosts/day": 23,
+    "users_listed@25hosts/day": 1377
+  }
+}

@@ -1,0 +1,205 @@
+{
+ "params": {
+  "window": 7,
+  "min_shared": 3,
+  "min_share": 0.8
+ },
+ "val": {
+  "split": "val",
+  "seeds": 198,
+  "attacker_seeds": 5,
+  "account_recall": 0.9867581827726756,
+  "account_precision": 0.42537077073785595,
+  "dst_recall": 0.995512956565588,
+  "src_found": 0.39999999999999997,
+  "edge_precision": 0.39109930146230687,
+  "median_chain_accounts": 190.0,
+  "benign_seed_median_accounts": 26.0,
+  "block_recommended_attacker": "5/5",
+  "block_recommended_benign": "58/193",
+  "attacker_seed_detail": [
+   {
+    "host": "C17693",
+    "day": 8,
+    "found_accounts": 49,
+    "rt_accounts": 49,
+    "chain_accounts": 150,
+    "found_src": [
+     "C17693",
+     "C18025"
+    ],
+    "rt_src": [
+     "C17693",
+     "C18025",
+     "C19932"
+    ],
+    "found_dst": 181,
+    "rt_dst": 181
+   },
+   {
+    "host": "C17693",
+    "day": 12,
+    "found_accounts": 71,
+    "rt_accounts": 72,
+    "chain_accounts": 190,
+    "found_src": [
+     "C17693"
+    ],
+    "rt_src": [
+     "C17693",
+     "C19932",
+     "C22409"
+    ],
+    "found_dst": 234,
+    "rt_dst": 234
+   },
+   {
+    "host": "C17693",
+    "day": 15,
+    "found_accounts": 67,
+    "rt_accounts": 69,
+    "chain_accounts": 114,
+    "found_src": [
+     "C17693"
+    ],
+    "rt_src": [
+     "C17693",
+     "C19932",
+     "C22409"
+    ],
+    "found_dst": 133,
+    "rt_dst": 135
+   },
+   {
+    "host": "C17693",
+    "day": 13,
+    "found_accounts": 80,
+    "rt_accounts": 81,
+    "chain_accounts": 197,
+    "found_src": [
+     "C17693"
+    ],
+    "rt_src": [
+     "C17693",
+     "C19932",
+     "C22409"
+    ],
+    "found_dst": 258,
+    "rt_dst": 259
+   },
+   {
+    "host": "C17693",
+    "day": 14,
+    "found_accounts": 90,
+    "rt_accounts": 91,
+    "chain_accounts": 208,
+    "found_src": [
+     "C17693"
+    ],
+    "rt_src": [
+     "C17693",
+     "C19932",
+     "C22409"
+    ],
+    "found_dst": 265,
+    "rt_dst": 266
+   }
+  ]
+ },
+ "test": {
+  "split": "test",
+  "seeds": 186,
+  "attacker_seeds": 5,
+  "account_recall": 0.9875,
+  "account_precision": 0.5297005356312249,
+  "dst_recall": 0.9287231559290383,
+  "src_found": 0.5,
+  "edge_precision": 0.45023113047154284,
+  "median_chain_accounts": 45.0,
+  "benign_seed_median_accounts": 20.0,
+  "block_recommended_attacker": "5/5",
+  "block_recommended_benign": "37/181",
+  "attacker_seed_detail": [
+   {
+    "host": "C17693",
+    "day": 26,
+    "found_accounts": 20,
+    "rt_accounts": 20,
+    "chain_accounts": 34,
+    "found_src": [
+     "C17693"
+    ],
+    "rt_src": [
+     "C17693",
+     "C19932"
+    ],
+    "found_dst": 27,
+    "rt_dst": 28
+   },
+   {
+    "host": "C17693",
+    "day": 27,
+    "found_accounts": 23,
+    "rt_accounts": 23,
+    "chain_accounts": 46,
+    "found_src": [
+     "C17693"
+    ],
+    "rt_src": [
+     "C17693",
+     "C19932"
+    ],
+    "found_dst": 32,
+    "rt_dst": 34
+   },
+   {
+    "host": "C17693",
+    "day": 21,
+    "found_accounts": 15,
+    "rt_accounts": 16,
+    "chain_accounts": 29,
+    "found_src": [
+     "C17693"
+    ],
+    "rt_src": [
+     "C17693",
+     "C19932"
+    ],
+    "found_dst": 15,
+    "rt_dst": 16
+   },
+   {
+    "host": "C17693",
+    "day": 28,
+    "found_accounts": 23,
+    "rt_accounts": 23,
+    "chain_accounts": 45,
+    "found_src": [
+     "C17693"
+    ],
+    "rt_src": [
+     "C17693",
+     "C19932"
+    ],
+    "found_dst": 31,
+    "rt_dst": 34
+   },
+   {
+    "host": "C17693",
+    "day": 29,
+    "found_accounts": 25,
+    "rt_accounts": 25,
+    "chain_accounts": 47,
+    "found_src": [
+     "C17693"
+    ],
+    "rt_src": [
+     "C17693",
+     "C19932"
+    ],
+    "found_dst": 32,
+    "rt_dst": 36
+   }
+  ]
+ }
+}

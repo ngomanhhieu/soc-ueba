@@ -1,0 +1,19 @@
+{
+ "lanl": {
+  "attackers": 26,
+  "detected": 26,
+  "mttd_days": 0.23,
+  "median_days": 0.0,
+  "same_day": 25,
+  "within_1_day": 25
+ },
+ "cert": {
+  "attackers": 52,
+  "detected": 33,
+  "mttd_days": 4.39,
+  "median_days": 0.0,
+  "same_day": 28,
+  "within_1_day": 29
+ },
+ "note": "Delay from the first malicious day to the first incident detection, test period, measured against dataset labels (daily processing: 0 = same day)."
+}

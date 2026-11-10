@@ -1,0 +1,612 @@
+{
+ "summary": {
+  "live": {
+   "days": 27,
+   "ml_alerts_per_day": 125.9,
+   "rule_alerts_per_day": 644.1,
+   "days_c17693_in_host_queue": 0,
+   "known_attacker_remote_logons": 1102
+  },
+  "test": {
+   "days": 10,
+   "ml_alerts_per_day": 115.2,
+   "rule_alerts_per_day": 25.6,
+   "days_c17693_in_host_queue": 2,
+   "known_attacker_remote_logons": 554
+  }
+ },
+ "days": [
+  {
+   "day": 20,
+   "period": "test",
+   "ml_alerts": 144,
+   "rule_alerts": 33,
+   "host_queue": [
+    "C5865",
+    "C22199",
+    "C23909",
+    "C3061",
+    "C1611"
+   ],
+   "known_attacker_remote_logons": 90,
+   "known_attacker_accounts": 2,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 21,
+   "period": "test",
+   "ml_alerts": 134,
+   "rule_alerts": 23,
+   "host_queue": [
+    "C1249",
+    "C20327",
+    "C20612",
+    "C1385",
+    "C1993"
+   ],
+   "known_attacker_remote_logons": 5,
+   "known_attacker_accounts": 3,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 22,
+   "period": "test",
+   "ml_alerts": 139,
+   "rule_alerts": 44,
+   "host_queue": [
+    "C41",
+    "C5828",
+    "C1480",
+    "C1385",
+    "C3937"
+   ],
+   "known_attacker_remote_logons": 72,
+   "known_attacker_accounts": 1,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 23,
+   "period": "test",
+   "ml_alerts": 94,
+   "rule_alerts": 2,
+   "host_queue": [
+    "C1424",
+    "C1385",
+    "C1128",
+    "C13883",
+    "C41"
+   ],
+   "known_attacker_remote_logons": 29,
+   "known_attacker_accounts": 1,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 24,
+   "period": "test",
+   "ml_alerts": 24,
+   "rule_alerts": 1,
+   "host_queue": [
+    "C16137",
+    "C3522",
+    "C5828",
+    "C1385",
+    "C1424"
+   ],
+   "known_attacker_remote_logons": 0,
+   "known_attacker_accounts": 0,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 25,
+   "period": "test",
+   "ml_alerts": 17,
+   "rule_alerts": 18,
+   "host_queue": [
+    "C5821",
+    "C2482",
+    "C1385",
+    "C135",
+    "C24466"
+   ],
+   "known_attacker_remote_logons": 34,
+   "known_attacker_accounts": 1,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 26,
+   "period": "test",
+   "ml_alerts": 143,
+   "rule_alerts": 33,
+   "host_queue": [
+    "C17693",
+    "C307",
+    "C2521",
+    "C1249",
+    "C1567"
+   ],
+   "known_attacker_remote_logons": 96,
+   "known_attacker_accounts": 32,
+   "c17693_in_host_queue": true
+  },
+  {
+   "day": 27,
+   "period": "test",
+   "ml_alerts": 145,
+   "rule_alerts": 10,
+   "host_queue": [
+    "C307",
+    "C22673",
+    "C2839",
+    "C17693",
+    "C742"
+   ],
+   "known_attacker_remote_logons": 67,
+   "known_attacker_accounts": 18,
+   "c17693_in_host_queue": true
+  },
+  {
+   "day": 28,
+   "period": "test",
+   "ml_alerts": 160,
+   "rule_alerts": 6,
+   "host_queue": [
+    "C307",
+    "C15888",
+    "C5821",
+    "C2057",
+    "C3937"
+   ],
+   "known_attacker_remote_logons": 83,
+   "known_attacker_accounts": 5,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 29,
+   "period": "test",
+   "ml_alerts": 152,
+   "rule_alerts": 86,
+   "host_queue": [
+    "C25023",
+    "C307",
+    "C3937",
+    "C5821",
+    "C15170"
+   ],
+   "known_attacker_remote_logons": 78,
+   "known_attacker_accounts": 4,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 30,
+   "period": "live",
+   "ml_alerts": 96,
+   "rule_alerts": 151,
+   "host_queue": [
+    "C23679",
+    "C25161",
+    "C5821",
+    "C307",
+    "C24736"
+   ],
+   "known_attacker_remote_logons": 0,
+   "known_attacker_accounts": 0,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 31,
+   "period": "live",
+   "ml_alerts": 33,
+   "rule_alerts": 144,
+   "host_queue": [
+    "C2482",
+    "C1249",
+    "C41",
+    "C5821",
+    "C1385"
+   ],
+   "known_attacker_remote_logons": 0,
+   "known_attacker_accounts": 0,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 32,
+   "period": "live",
+   "ml_alerts": 33,
+   "rule_alerts": 144,
+   "host_queue": [
+    "C5821",
+    "C41",
+    "C163",
+    "C135",
+    "C1128"
+   ],
+   "known_attacker_remote_logons": 0,
+   "known_attacker_accounts": 0,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 33,
+   "period": "live",
+   "ml_alerts": 169,
+   "rule_alerts": 128,
+   "host_queue": [
+    "C307",
+    "C24800",
+    "C5821",
+    "C15888",
+    "C1249"
+   ],
+   "known_attacker_remote_logons": 103,
+   "known_attacker_accounts": 3,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 34,
+   "period": "live",
+   "ml_alerts": 181,
+   "rule_alerts": 9,
+   "host_queue": [
+    "C5821",
+    "C14709",
+    "C18116",
+    "C307",
+    "C2839"
+   ],
+   "known_attacker_remote_logons": 133,
+   "known_attacker_accounts": 3,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 35,
+   "period": "live",
+   "ml_alerts": 203,
+   "rule_alerts": 37,
+   "host_queue": [
+    "C13406",
+    "C26176",
+    "C13642",
+    "C22020",
+    "C2057"
+   ],
+   "known_attacker_remote_logons": 62,
+   "known_attacker_accounts": 1,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 36,
+   "period": "live",
+   "ml_alerts": 201,
+   "rule_alerts": 109,
+   "host_queue": [
+    "C1128",
+    "C2039",
+    "C627",
+    "C25667",
+    "C15008"
+   ],
+   "known_attacker_remote_logons": 83,
+   "known_attacker_accounts": 6,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 37,
+   "period": "live",
+   "ml_alerts": 129,
+   "rule_alerts": 64,
+   "host_queue": [
+    "C41",
+    "C742",
+    "C13754",
+    "C25616",
+    "C1275"
+   ],
+   "known_attacker_remote_logons": 9,
+   "known_attacker_accounts": 1,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 38,
+   "period": "live",
+   "ml_alerts": 35,
+   "rule_alerts": 2,
+   "host_queue": [
+    "C5821",
+    "C1424",
+    "C135",
+    "C1275",
+    "C16065"
+   ],
+   "known_attacker_remote_logons": 0,
+   "known_attacker_accounts": 0,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 39,
+   "period": "live",
+   "ml_alerts": 30,
+   "rule_alerts": 3,
+   "host_queue": [
+    "C8359",
+    "C2804",
+    "C41",
+    "C5821",
+    "C8483"
+   ],
+   "known_attacker_remote_logons": 0,
+   "known_attacker_accounts": 0,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 40,
+   "period": "live",
+   "ml_alerts": 180,
+   "rule_alerts": 527,
+   "host_queue": [
+    "C5821",
+    "C25952",
+    "C135",
+    "C1503",
+    "C1871"
+   ],
+   "known_attacker_remote_logons": 156,
+   "known_attacker_accounts": 3,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 41,
+   "period": "live",
+   "ml_alerts": 189,
+   "rule_alerts": 1404,
+   "host_queue": [
+    "C5821",
+    "C24800",
+    "C2521",
+    "C26048",
+    "C1993"
+   ],
+   "known_attacker_remote_logons": 88,
+   "known_attacker_accounts": 2,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 42,
+   "period": "live",
+   "ml_alerts": 196,
+   "rule_alerts": 1533,
+   "host_queue": [
+    "C2174",
+    "C26223",
+    "C2254",
+    "C5778",
+    "C5821"
+   ],
+   "known_attacker_remote_logons": 120,
+   "known_attacker_accounts": 1,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 43,
+   "period": "live",
+   "ml_alerts": 188,
+   "rule_alerts": 1589,
+   "host_queue": [
+    "C627",
+    "C24586",
+    "C742",
+    "C3937",
+    "C11457"
+   ],
+   "known_attacker_remote_logons": 2,
+   "known_attacker_accounts": 1,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 44,
+   "period": "live",
+   "ml_alerts": 123,
+   "rule_alerts": 1240,
+   "host_queue": [
+    "C1424",
+    "C742",
+    "C6479",
+    "C18077",
+    "C26352"
+   ],
+   "known_attacker_remote_logons": 0,
+   "known_attacker_accounts": 0,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 45,
+   "period": "live",
+   "ml_alerts": 44,
+   "rule_alerts": 1014,
+   "host_queue": [
+    "C5821",
+    "C41",
+    "C1249",
+    "C135",
+    "C15210"
+   ],
+   "known_attacker_remote_logons": 0,
+   "known_attacker_accounts": 0,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 46,
+   "period": "live",
+   "ml_alerts": 40,
+   "rule_alerts": 1036,
+   "host_queue": [
+    "C22328",
+    "C248",
+    "C5778",
+    "C1385",
+    "C1692"
+   ],
+   "known_attacker_remote_logons": 0,
+   "known_attacker_accounts": 0,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 47,
+   "period": "live",
+   "ml_alerts": 40,
+   "rule_alerts": 1064,
+   "host_queue": [
+    "C5821",
+    "C2482",
+    "C13883",
+    "C135",
+    "C1424"
+   ],
+   "known_attacker_remote_logons": 0,
+   "known_attacker_accounts": 0,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 48,
+   "period": "live",
+   "ml_alerts": 189,
+   "rule_alerts": 1447,
+   "host_queue": [
+    "C5821",
+    "C1139",
+    "C1567",
+    "C1249",
+    "C1089"
+   ],
+   "known_attacker_remote_logons": 79,
+   "known_attacker_accounts": 2,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 49,
+   "period": "live",
+   "ml_alerts": 177,
+   "rule_alerts": 1474,
+   "host_queue": [
+    "C26223",
+    "C18420",
+    "C3720",
+    "C14561",
+    "C1611"
+   ],
+   "known_attacker_remote_logons": 103,
+   "known_attacker_accounts": 1,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 50,
+   "period": "live",
+   "ml_alerts": 217,
+   "rule_alerts": 966,
+   "host_queue": [
+    "C2254",
+    "C5763",
+    "C627",
+    "C1503",
+    "C26645"
+   ],
+   "known_attacker_remote_logons": 31,
+   "known_attacker_accounts": 2,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 51,
+   "period": "live",
+   "ml_alerts": 121,
+   "rule_alerts": 355,
+   "host_queue": [
+    "C5821",
+    "C1249",
+    "C875",
+    "C3937",
+    "C135"
+   ],
+   "known_attacker_remote_logons": 22,
+   "known_attacker_accounts": 1,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 52,
+   "period": "live",
+   "ml_alerts": 27,
+   "rule_alerts": 190,
+   "host_queue": [
+    "C1249",
+    "C1424",
+    "C627",
+    "C10694",
+    "C15838"
+   ],
+   "known_attacker_remote_logons": 0,
+   "known_attacker_accounts": 0,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 53,
+   "period": "live",
+   "ml_alerts": 22,
+   "rule_alerts": 347,
+   "host_queue": [
+    "C1249",
+    "C15158",
+    "C2482",
+    "C5778",
+    "C14222"
+   ],
+   "known_attacker_remote_logons": 0,
+   "known_attacker_accounts": 0,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 54,
+   "period": "live",
+   "ml_alerts": 165,
+   "rule_alerts": 938,
+   "host_queue": [
+    "C1567",
+    "C15888",
+    "C259",
+    "C3037",
+    "C2057"
+   ],
+   "known_attacker_remote_logons": 0,
+   "known_attacker_accounts": 0,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 55,
+   "period": "live",
+   "ml_alerts": 172,
+   "rule_alerts": 797,
+   "host_queue": [
+    "C4047",
+    "C5821",
+    "C2809",
+    "C18184",
+    "C23277"
+   ],
+   "known_attacker_remote_logons": 0,
+   "known_attacker_accounts": 0,
+   "c17693_in_host_queue": false
+  },
+  {
+   "day": 56,
+   "period": "live",
+   "ml_alerts": 199,
+   "rule_alerts": 678,
+   "host_queue": [
+    "C5821",
+    "C291",
+    "C3070",
+    "C15888",
+    "C20374"
+   ],
+   "known_attacker_remote_logons": 111,
+   "known_attacker_accounts": 1,
+   "c17693_in_host_queue": false
+  }
+ ]
+}

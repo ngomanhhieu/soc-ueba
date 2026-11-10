@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Overview{% endblock %} · SOC/UEBA</title>
+<script src="/static/theme.js"></script>
+<link rel="stylesheet" href="/static/app.css">
+<script src="/static/app.js" defer></script>
+</head>
+<body>
+<svg width="0" height="0" class="sprite" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17.5v.01"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 17l5-5-5-5M15 12H3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></symbol>
+  <symbol id="i-radar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12l6-6"/></symbol>
+</svg>
+{% if user %}
+<div class="shell">
+  <aside class="side">
+    <a class="brand" href="/"><span class="logo"><svg class="icon"><use href="#i-radar"/></svg></span>
+      <span>SOC/UEBA<small>Behaviour analytics</small></span></a>
+    <nav class="nav">
+      <a href="/" class="{{ 'on' if path == '/' }}"><svg class="icon"><use href="#i-home"/></svg>Overview</a>
+      <a href="/incidents" class="{{ 'on' if path.startswith('/incidents') or path.startswith('/entity') }}"><svg class="icon"><use href="#i-alert"/></svg>Incidents</a>
+      <a href="/ioc" class="{{ 'on' if path == '/ioc' }}"><svg class="icon"><use href="#i-shield"/></svg>Blocked hosts (IOC)</a>
+      {% if user.role == 'lead' %}
+      <div class="sep">Lead</div>
+      <a href="/replay" class="{{ 'on' if path == '/replay' }}"><svg class="icon"><use href="#i-play"/></svg>Day-by-day demo</a>
+      <a href="/audit" class="{{ 'on' if path == '/audit' }}"><svg class="icon"><use href="#i-list"/></svg>Audit log</a>
+      {% endif %}
+    </nav>
+    <div class="side-foot">
+      {% if user.role == 'lead' %}
+      <form method="post" action="/truth-mode">
+        <input type="hidden" name="csrf" value="{{ csrf }}">
+        <button class="btn ghost sm {{ 'on' if show_truth }}" title="Show the dataset's ground-truth labels to evaluate the system">
+          <svg class="icon"><use href="#i-eye"/></svg>Evaluation mode: {{ 'ON' if show_truth else 'off' }}</button>
+      </form>
+      {% endif %}
+      <button class="btn ghost sm" id="theme-toggle" type="button"><svg class="icon"><use href="#i-moon"/></svg>Light / dark</button>
+      <div class="who"><span class="avatar">{{ user.username[:1]|upper }}</span>
+        <div><b>{{ user.username }}</b><span>{{ 'SOC lead' if user.role == 'lead' else 'SOC analyst' }}</span></div></div>
+      <form method="post" action="/logout">
+        <input type="hidden" name="csrf" value="{{ csrf }}">
+        <button class="btn ghost sm"><svg class="icon"><use href="#i-out"/></svg>Sign out</button>
+      </form>
+    </div>
+  </aside>
+  <main class="main">{% endif %}{% if not user %}<main class="bare">{% endif %}
+{% block body %}{% endblock %}
+</main>
+{% if user %}</div>{% endif %}
+</body>
+</html>

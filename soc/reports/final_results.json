@@ -1,0 +1,377 @@
+{
+  "lanl_user_level": {
+    "val": {
+      "roc_auc": 0.9850688615958996,
+      "pr_auc": 0.17030787324026123,
+      "accounts_caught": 66,
+      "accounts_total": 97,
+      "alerts_per_day": 82.5
+    },
+    "test": {
+      "roc_auc": 0.9705581164017891,
+      "pr_auc": 0.0870618875173383,
+      "accounts_caught": 13,
+      "accounts_total": 26,
+      "alerts_per_day": 115.2
+    }
+  },
+  "lanl_host_level": {
+    "val": {
+      "redteam_user_days": 134,
+      "accounts": 97,
+      "user_days@5hosts/day": 117,
+      "accounts@5hosts/day": 95,
+      "users_listed@5hosts/day": 643,
+      "user_days@10hosts/day": 118,
+      "accounts@10hosts/day": 95,
+      "users_listed@10hosts/day": 964,
+      "user_days@25hosts/day": 120,
+      "accounts@25hosts/day": 96,
+      "users_listed@25hosts/day": 1603
+    },
+    "test": {
+      "redteam_user_days": 34,
+      "accounts": 26,
+      "user_days@5hosts/day": 25,
+      "accounts@5hosts/day": 22,
+      "users_listed@5hosts/day": 478,
+      "user_days@10hosts/day": 25,
+      "accounts@10hosts/day": 22,
+      "users_listed@10hosts/day": 786,
+      "user_days@25hosts/day": 27,
+      "accounts@25hosts/day": 23,
+      "users_listed@25hosts/day": 1377
+    }
+  },
+  "cert_selected": "if_ae_score",
+  "cert_val_pr_auc": {
+    "stat_score": 0.02692375450823662,
+    "iforest_score": 0.14946234870403668,
+    "ae_score": 0.1302106035462648,
+    "ensemble_score": 0.10343775355505862,
+    "if_ae_score": 0.1619739223240322
+  },
+  "cert_test": {
+    "stat_score": {
+      "roc_auc": 0.8587,
+      "pr_auc": 0.0145,
+      "precision@100": 0.05
+    },
+    "iforest_score": {
+      "roc_auc": 0.9544,
+      "pr_auc": 0.0657,
+      "precision@100": 0.28
+    },
+    "ae_score": {
+      "roc_auc": 0.9406,
+      "pr_auc": 0.0865,
+      "precision@100": 0.32
+    },
+    "ensemble_score": {
+      "roc_auc": 0.9324,
+      "pr_auc": 0.0463,
+      "precision@100": 0.21
+    },
+    "if_ae_score": {
+      "roc_auc": 0.9534,
+      "pr_auc": 0.0877,
+      "precision@100": 0.37
+    }
+  },
+  "cert_user_level": {
+    "0.99": {
+      "alerts": 1400,
+      "alerts_per_day": 5.41,
+      "insiders_caught": 42,
+      "insiders_total": 52,
+      "by_scenario": {
+        "1": "22/22",
+        "2": "15/25",
+        "3": "5/5"
+      }
+    },
+    "0.995": {
+      "alerts": 646,
+      "alerts_per_day": 2.49,
+      "insiders_caught": 32,
+      "insiders_total": 52,
+      "by_scenario": {
+        "1": "22/22",
+        "2": "5/25",
+        "3": "5/5"
+      }
+    },
+    "0.999": {
+      "alerts": 156,
+      "alerts_per_day": 0.6,
+      "insiders_caught": 26,
+      "insiders_total": 52,
+      "by_scenario": {
+        "1": "20/22",
+        "2": "1/25",
+        "3": "5/5"
+      }
+    },
+    "top2/day": {
+      "alerts": 518,
+      "insiders_caught": 30,
+      "insiders_total": 52,
+      "by_scenario": {
+        "1": "20/22",
+        "2": "5/25",
+        "3": "5/5"
+      }
+    },
+    "top5/day": {
+      "alerts": 1294,
+      "insiders_caught": 38,
+      "insiders_total": 52,
+      "by_scenario": {
+        "1": "22/22",
+        "2": "11/25",
+        "3": "5/5"
+      }
+    }
+  },
+  "risk": [
+    {
+      "dataset": "cert",
+      "mode": "rules",
+      "split": "val",
+      "budget_per_day": 5,
+      "decay": 0.5,
+      "ml_weight": 20,
+      "ml_floor": 0.95,
+      "user_days_hit": 35,
+      "user_days": 303,
+      "accounts_hit": 12,
+      "accounts": 24,
+      "incidents_per_day": 5.0
+    },
+    {
+      "dataset": "cert",
+      "mode": "rules",
+      "split": "test",
+      "budget_per_day": 5,
+      "decay": 0.5,
+      "ml_weight": 20,
+      "ml_floor": 0.95,
+      "user_days_hit": 19,
+      "user_days": 624,
+      "accounts_hit": 12,
+      "accounts": 52,
+      "incidents_per_day": 5.0
+    },
+    {
+      "dataset": "cert",
+      "mode": "ml",
+      "split": "val",
+      "budget_per_day": 5,
+      "decay": 0.5,
+      "ml_weight": 20,
+      "ml_floor": 0.99,
+      "user_days_hit": 53,
+      "user_days": 303,
+      "accounts_hit": 16,
+      "accounts": 24,
+      "incidents_per_day": 5.0
+    },
+    {
+      "dataset": "cert",
+      "mode": "ml",
+      "split": "test",
+      "budget_per_day": 5,
+      "decay": 0.5,
+      "ml_weight": 20,
+      "ml_floor": 0.99,
+      "user_days_hit": 85,
+      "user_days": 624,
+      "accounts_hit": 35,
+      "accounts": 52,
+      "incidents_per_day": 5.0
+    },
+    {
+      "dataset": "cert",
+      "mode": "both",
+      "split": "val",
+      "budget_per_day": 5,
+      "decay": 0.5,
+      "ml_weight": 80,
+      "ml_floor": 0.99,
+      "user_days_hit": 53,
+      "user_days": 303,
+      "accounts_hit": 15,
+      "accounts": 24,
+      "incidents_per_day": 5.0
+    },
+    {
+      "dataset": "cert",
+      "mode": "both",
+      "split": "test",
+      "budget_per_day": 5,
+      "decay": 0.5,
+      "ml_weight": 80,
+      "ml_floor": 0.99,
+      "user_days_hit": 81,
+      "user_days": 624,
+      "accounts_hit": 34,
+      "accounts": 52,
+      "incidents_per_day": 5.0
+    },
+    {
+      "dataset": "lanl",
+      "mode": "rules",
+      "split": "val",
+      "budget_per_day": 25,
+      "decay": 0.5,
+      "ml_weight": 20,
+      "ml_floor": 0.95,
+      "user_days_hit": 17,
+      "user_days": 134,
+      "accounts_hit": 10,
+      "accounts": 97,
+      "incidents_per_day": 24.2
+    },
+    {
+      "dataset": "lanl",
+      "mode": "rules",
+      "split": "test",
+      "budget_per_day": 25,
+      "decay": 0.5,
+      "ml_weight": 20,
+      "ml_floor": 0.95,
+      "user_days_hit": 3,
+      "user_days": 34,
+      "accounts_hit": 1,
+      "accounts": 26,
+      "incidents_per_day": 20.9
+    },
+    {
+      "dataset": "lanl",
+      "mode": "ml",
+      "split": "val",
+      "budget_per_day": 25,
+      "decay": 0.5,
+      "ml_weight": 20,
+      "ml_floor": 0.99,
+      "user_days_hit": 29,
+      "user_days": 134,
+      "accounts_hit": 21,
+      "accounts": 97,
+      "incidents_per_day": 25.0
+    },
+    {
+      "dataset": "lanl",
+      "mode": "ml",
+      "split": "test",
+      "budget_per_day": 25,
+      "decay": 0.5,
+      "ml_weight": 20,
+      "ml_floor": 0.99,
+      "user_days_hit": 10,
+      "user_days": 34,
+      "accounts_hit": 4,
+      "accounts": 26,
+      "incidents_per_day": 25.0
+    },
+    {
+      "dataset": "lanl",
+      "mode": "both",
+      "split": "val",
+      "budget_per_day": 25,
+      "decay": 0.5,
+      "ml_weight": 40,
+      "ml_floor": 0.99,
+      "user_days_hit": 31,
+      "user_days": 134,
+      "accounts_hit": 21,
+      "accounts": 97,
+      "incidents_per_day": 25.0
+    },
+    {
+      "dataset": "lanl",
+      "mode": "both",
+      "split": "test",
+      "budget_per_day": 25,
+      "decay": 0.5,
+      "ml_weight": 40,
+      "ml_floor": 0.99,
+      "user_days_hit": 9,
+      "user_days": 34,
+      "accounts_hit": 4,
+      "accounts": 26,
+      "incidents_per_day": 25.0
+    },
+    {
+      "dataset": "lanl",
+      "mode": "both+hosts",
+      "split": "val",
+      "budget_per_day": 25,
+      "decay": 0.85,
+      "ml_weight": 20,
+      "ml_floor": 0.99,
+      "user_days_hit": 124,
+      "user_days": 134,
+      "accounts_hit": 96,
+      "accounts": 97,
+      "incidents_per_day": 36.5
+    },
+    {
+      "dataset": "lanl",
+      "mode": "both+hosts",
+      "split": "test",
+      "budget_per_day": 25,
+      "decay": 0.85,
+      "ml_weight": 20,
+      "ml_floor": 0.99,
+      "user_days_hit": 32,
+      "user_days": 34,
+      "accounts_hit": 26,
+      "accounts": 26,
+      "incidents_per_day": 38.6
+    }
+  ],
+  "attack_chain_lanl": {
+    "params": {
+      "window": 7,
+      "min_shared": 3,
+      "min_share": 0.8
+    },
+    "val": {
+      "split": "val",
+      "seeds": 198,
+      "attacker_seeds": 5,
+      "account_recall": 0.9867581827726756,
+      "account_precision": 0.42537077073785595,
+      "dst_recall": 0.995512956565588,
+      "src_found": 0.39999999999999997,
+      "edge_precision": 0.39109930146230687,
+      "median_chain_accounts": 190.0,
+      "benign_seed_median_accounts": 26.0,
+      "block_recommended_attacker": "5/5",
+      "block_recommended_benign": "58/193"
+    },
+    "test": {
+      "split": "test",
+      "seeds": 186,
+      "attacker_seeds": 5,
+      "account_recall": 0.9875,
+      "account_precision": 0.5297005356312249,
+      "dst_recall": 0.9287231559290383,
+      "src_found": 0.5,
+      "edge_precision": 0.45023113047154284,
+      "median_chain_accounts": 45.0,
+      "benign_seed_median_accounts": 20.0,
+      "block_recommended_attacker": "5/5",
+      "block_recommended_benign": "37/181"
+    }
+  },
+  "insider_timeline_cert": {
+    "incidents": 387,
+    "insider_incidents": 39,
+    "insider_with_new_exfil_step": 0.5897435897435898,
+    "insider_median_new_steps": 3.0,
+    "benign_with_new_exfil_step": 0.09482758620689655,
+    "benign_median_new_steps": 0.0
+  }
+}

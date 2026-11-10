@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Blocked hosts{% endblock %}
+{% block body %}
+<div class="page-head"><div>
+  <h1>Blocked hosts (IOC)</h1>
+  <p>When a lead approves "Block source host", the host becomes an indicator of compromise. From the next day
+     a Sigma rule flags every sign-in from it – the system learns from the analysts' decisions.</p>
+</div></div>
+<div class="feed">
+{% for i in items %}
+  <div class="item {{ 'critical' if i.active else '' }}">
+    <div class="what"><span class="mono">{{ i.value }}</span> – {{ i.reason }}</div>
+    <div class="meta"><span>{{ 'Active' if i.active else 'Disabled' }}</span><span>added by {{ i.created_by }}, {{ i.created_at[:16]|replace('T', ' ') }}</span>
+      <a href="/incidents/{{ i.incident_id }}">from incident {{ i.incident_id }}</a></div>
+    <div class="side-r">{% if i.active and user.role == 'lead' %}<form method="post" action="/ioc/{{ i._id }}/deactivate" class="inline"><input type="hidden" name="csrf" value="{{ csrf }}"><button class="btn sm ghost">Disable</button></form>{% endif %}</div>
+  </div>
+{% else %}<p class="empty">No blocked hosts yet. Approve a "Block source host" action in an incident to add one.</p>{% endfor %}
+</div>
+{% endblock %}

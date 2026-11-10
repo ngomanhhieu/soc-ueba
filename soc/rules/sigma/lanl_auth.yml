@@ -1,0 +1,151 @@
+# Luật Sigma cho log xác thực Windows/AD (LANL auth). Field theo ECS:
+#   user.name (tài khoản nguồn), user.kind (human|machine|system|other – làm giàu từ tên TK),
+#   source.host, destination.host, network.remote (nguồn ≠ đích), auth.type, logon.type,
+#   event.action (LogOn|LogOff|TGS|TGT|AuthMap), event.outcome (Success|Fail)
+# Ngưỡng các luật tương quan được chọn CHỈ theo lưu lượng cảnh báo ở giai đoạn train (ngày 1–7,
+# không dùng nhãn) – xem soc/rules/tune_thresholds.py.
+title: Failed logon by a human account
+name: lanl_human_auth_fail
+id: 1d0b6c1e-0001-4a51-9e6b-0000000a0001
+status: experimental
+logsource: {product: lanl, service: auth}
+detection:
+  selection:
+    event.outcome: Fail
+    user.kind: human
+  condition: selection
+level: informational
+---
+title: Brute force – many failed logons to one account from one host
+id: 1d0b6c1e-0002-4a51-9e6b-0000000a0002
+status: experimental
+description: Một máy thử mật khẩu liên tục cho cùng một tài khoản người trong 10 phút.
+correlation:
+  type: event_count
+  rules: [lanl_human_auth_fail]
+  group-by: [user.name, source.host]
+  timespan: 10m
+  condition: {gte: 20}
+  context: [destination.host]
+tags: [attack.credential_access, attack.t1110.001]
+level: medium
+falsepositives: [Người dùng gõ sai mật khẩu đã lưu trong ứng dụng/dịch vụ]
+---
+title: Password spraying – one host failing logons to many accounts
+id: 1d0b6c1e-0003-4a51-9e6b-0000000a0003
+status: experimental
+correlation:
+  type: value_count
+  rules: [lanl_human_auth_fail]
+  group-by: [source.host]
+  timespan: 10m
+  condition: {field: user.name, gte: 5}
+  context: [user.name, destination.host]
+tags: [attack.credential_access, attack.t1110.003]
+level: high
+falsepositives: [Máy dùng chung (kiosk, terminal server) nhiều người gõ sai mật khẩu]
+---
+title: NTLM network logon by a human account to another host
+name: lanl_ntlm_network_remote
+id: 1d0b6c1e-0004-4a51-9e6b-0000000a0004
+status: experimental
+detection:
+  selection:
+    auth.type: NTLM
+    logon.type: Network
+    network.remote: true
+    user.kind: human
+    event.outcome: Success
+  condition: selection
+logsource: {product: lanl, service: auth}
+level: informational
+---
+title: Pass-the-Hash – human account NTLM logons to many hosts within 1 hour
+id: 1d0b6c1e-0005-4a51-9e6b-0000000a0005
+status: experimental
+description: >
+  Dùng hash NTLM đánh cắp để xác thực mạng hàng loạt (MITRE T1550.002). Người dùng bình thường
+  chủ yếu dùng Kerberos và chỉ chạm vài máy chủ quen.
+correlation:
+  type: value_count
+  rules: [lanl_ntlm_network_remote]
+  group-by: [user.name]
+  timespan: 1h
+  condition: {field: destination.host, gte: 5}
+  context: [source.host, destination.host]
+tags: [attack.lateral_movement, attack.defense_evasion, attack.t1550.002]
+level: high
+falsepositives: [Script quản trị dùng NTLM, ứng dụng cũ không hỗ trợ Kerberos]
+---
+title: Successful network logon by a human account to another host
+name: lanl_remote_logon_human
+id: 1d0b6c1e-0006-4a51-9e6b-0000000a0006
+status: experimental
+logsource: {product: lanl, service: auth}
+detection:
+  selection:
+    logon.type: [Network, RemoteInteractive]
+    network.remote: true
+    user.kind: human
+    event.outcome: Success
+    event.action: LogOn
+  condition: selection
+level: informational
+---
+title: Lateral movement – human account logs on to very many hosts within 1 hour
+id: 1d0b6c1e-0007-4a51-9e6b-0000000a0007
+status: experimental
+correlation:
+  type: value_count
+  rules: [lanl_remote_logon_human]
+  group-by: [user.name]
+  timespan: 1h
+  condition: {field: destination.host, gte: 15}
+  context: [source.host, destination.host]
+tags: [attack.lateral_movement, attack.t1021]
+level: medium
+falsepositives: [Quản trị viên, công cụ quét/kiểm kê, phần mềm triển khai]
+---
+title: Many human accounts logging on from the same host within 1 hour
+id: 1d0b6c1e-0008-4a51-9e6b-0000000a0008
+status: experimental
+description: >
+  Máy cá nhân chỉ có 1–2 người dùng. Một máy xác thực mạng bằng nhiều tài khoản người là dấu
+  hiệu kẻ tấn công dùng credential thu thập được (T1078) – không phụ thuộc lịch sử nên không bị
+  "đầu độc baseline" khi kẻ tấn công ở lâu.
+correlation:
+  type: value_count
+  rules: [lanl_remote_logon_human]
+  group-by: [source.host]
+  timespan: 1h
+  condition: {field: user.name, gte: 8}
+  context: [user.name, destination.host]
+tags: [attack.defense_evasion, attack.persistence, attack.t1078]
+level: high
+falsepositives: [Terminal server / Citrix / máy chủ ứng dụng chuyển tiếp xác thực]
+---
+title: Logon from a host on the IOC list
+name: lanl_ioc_source_host
+id: 1d0b6c1e-0009-4a51-9e6b-0000000a0009
+status: experimental
+logsource: {product: lanl, service: auth}
+detection:
+  selection:
+    source.host|expand: '%ioc_hosts%'
+    user.kind: human
+  condition: selection
+level: informational
+---
+title: Activity from a host confirmed as attacker (IOC)
+id: 1d0b6c1e-0010-4a51-9e6b-0000000a0010
+status: experimental
+description: IOC do analyst xác nhận từ incident trước (vòng phản hồi SOC).
+correlation:
+  type: event_count
+  rules: [lanl_ioc_source_host]
+  group-by: [user.name, source.host]
+  timespan: 1d
+  condition: {gte: 1}
+  context: [destination.host]
+tags: [attack.defense_evasion, attack.persistence, attack.t1078]
+level: critical

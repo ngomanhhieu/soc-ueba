@@ -1,0 +1,1209 @@
+{
+ "source": "https://d3fend.mitre.org",
+ "map": {
+  "T1018": [
+   {
+    "id": "D3-DF",
+    "name": "Decoy File",
+    "tactic": "Deceive",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-APCA",
+    "name": "Application Protocol Command Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-CSPP",
+    "name": "Client-server Payload Profiling",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-FA",
+    "name": "File Analysis",
+    "tactic": "Detect",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-FIM",
+    "name": "File Integrity Monitoring",
+    "tactic": "Detect",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-NTCD",
+    "name": "Network Traffic Community Deviation",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTSA",
+    "name": "Network Traffic Signature Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-PHDURA",
+    "name": "Per Host Download-Upload Ratio Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-PMAD",
+    "name": "Protocol Metadata Anomaly Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-PSA",
+    "name": "Process Spawn Analysis",
+    "tactic": "Detect",
+    "artifact": "Create Process"
+   },
+   {
+    "id": "D3-RTSD",
+    "name": "Remote Terminal Session Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-SCA",
+    "name": "System Call Analysis",
+    "tactic": "Detect",
+    "artifact": "System Call"
+   },
+   {
+    "id": "D3-SFA",
+    "name": "System File Analysis",
+    "tactic": "Detect",
+    "artifact": "Operating System File"
+   },
+   {
+    "id": "D3-UGLPA",
+    "name": "User Geolocation Logon Pattern Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-FEV",
+    "name": "File Eviction",
+    "tactic": "Evict",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-FE",
+    "name": "File Encryption",
+    "tactic": "Harden",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-CF",
+    "name": "Content Filtering",
+    "tactic": "Isolate",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-CM",
+    "name": "Content Modification",
+    "tactic": "Isolate",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-CQ",
+    "name": "Content Quarantine",
+    "tactic": "Isolate",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-EAL",
+    "name": "Executable Allowlisting",
+    "tactic": "Isolate",
+    "artifact": "Create Process"
+   },
+   {
+    "id": "D3-EDL",
+    "name": "Executable Denylisting",
+    "tactic": "Isolate",
+    "artifact": "Create Process"
+   },
+   {
+    "id": "D3-HBPI",
+    "name": "Hardware-based Process Isolation",
+    "tactic": "Isolate",
+    "artifact": "Create Process"
+   },
+   {
+    "id": "D3-LFP",
+    "name": "Local File Permissions",
+    "tactic": "Isolate",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-NTF",
+    "name": "Network Traffic Filtering",
+    "tactic": "Isolate",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-RFAM",
+    "name": "Remote File Access Mediation",
+    "tactic": "Isolate",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-SCF",
+    "name": "System Call Filtering",
+    "tactic": "Isolate",
+    "artifact": "System Call"
+   },
+   {
+    "id": "D3-RF",
+    "name": "Restore File",
+    "tactic": "Restore",
+    "artifact": "File"
+   }
+  ],
+  "T1021": [
+   {
+    "id": "D3-APCA",
+    "name": "Application Protocol Command Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-CAA",
+    "name": "Connection Attempt Analysis",
+    "tactic": "Detect",
+    "artifact": "Intranet Network Traffic"
+   },
+   {
+    "id": "D3-CSPP",
+    "name": "Client-server Payload Profiling",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTCD",
+    "name": "Network Traffic Community Deviation",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTSA",
+    "name": "Network Traffic Signature Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-PHDURA",
+    "name": "Per Host Download-Upload Ratio Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-PMAD",
+    "name": "Protocol Metadata Anomaly Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-RTSD",
+    "name": "Remote Terminal Session Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-UGLPA",
+    "name": "User Geolocation Logon Pattern Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-ST",
+    "name": "Session Termination",
+    "tactic": "Evict",
+    "artifact": "Session"
+   },
+   {
+    "id": "D3-NTF",
+    "name": "Network Traffic Filtering",
+    "tactic": "Isolate",
+    "artifact": "Network Traffic"
+   }
+  ],
+  "T1048": [
+   {
+    "id": "D3-DF",
+    "name": "Decoy File",
+    "tactic": "Deceive",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-APCA",
+    "name": "Application Protocol Command Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-CA",
+    "name": "Certificate Analysis",
+    "tactic": "Detect",
+    "artifact": "Certificate File"
+   },
+   {
+    "id": "D3-CSPP",
+    "name": "Client-server Payload Profiling",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-FA",
+    "name": "File Analysis",
+    "tactic": "Detect",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-FIM",
+    "name": "File Integrity Monitoring",
+    "tactic": "Detect",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-NTCD",
+    "name": "Network Traffic Community Deviation",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTSA",
+    "name": "Network Traffic Signature Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-PHDURA",
+    "name": "Per Host Download-Upload Ratio Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-PMAD",
+    "name": "Protocol Metadata Anomaly Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-RPA",
+    "name": "Relay Pattern Analysis",
+    "tactic": "Detect",
+    "artifact": "Outbound Internet Network Traffic"
+   },
+   {
+    "id": "D3-RTSD",
+    "name": "Remote Terminal Session Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-UGLPA",
+    "name": "User Geolocation Logon Pattern Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-FEV",
+    "name": "File Eviction",
+    "tactic": "Evict",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-FE",
+    "name": "File Encryption",
+    "tactic": "Harden",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-CF",
+    "name": "Content Filtering",
+    "tactic": "Isolate",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-CM",
+    "name": "Content Modification",
+    "tactic": "Isolate",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-CQ",
+    "name": "Content Quarantine",
+    "tactic": "Isolate",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-LFP",
+    "name": "Local File Permissions",
+    "tactic": "Isolate",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-NTF",
+    "name": "Network Traffic Filtering",
+    "tactic": "Isolate",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-OTF",
+    "name": "Outbound Traffic Filtering",
+    "tactic": "Isolate",
+    "artifact": "Outbound Network Traffic"
+   },
+   {
+    "id": "D3-RFAM",
+    "name": "Remote File Access Mediation",
+    "tactic": "Isolate",
+    "artifact": "File"
+   },
+   {
+    "id": "D3-RF",
+    "name": "Restore File",
+    "tactic": "Restore",
+    "artifact": "File"
+   }
+  ],
+  "T1048.003": [
+   {
+    "id": "D3-APCA",
+    "name": "Application Protocol Command Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-CSPP",
+    "name": "Client-server Payload Profiling",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTCD",
+    "name": "Network Traffic Community Deviation",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTSA",
+    "name": "Network Traffic Signature Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-PHDURA",
+    "name": "Per Host Download-Upload Ratio Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-PMAD",
+    "name": "Protocol Metadata Anomaly Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-RPA",
+    "name": "Relay Pattern Analysis",
+    "tactic": "Detect",
+    "artifact": "Outbound Internet Network Traffic"
+   },
+   {
+    "id": "D3-RTSD",
+    "name": "Remote Terminal Session Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-UGLPA",
+    "name": "User Geolocation Logon Pattern Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTF",
+    "name": "Network Traffic Filtering",
+    "tactic": "Isolate",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-OTF",
+    "name": "Outbound Traffic Filtering",
+    "tactic": "Isolate",
+    "artifact": "Outbound Network Traffic"
+   }
+  ],
+  "T1052.001": [
+   {
+    "id": "D3-RH",
+    "name": "Radiation Hardening",
+    "tactic": "Harden",
+    "artifact": "Hardware Device"
+   },
+   {
+    "id": "D3-IOPR",
+    "name": "IO Port Restriction",
+    "tactic": "Isolate",
+    "artifact": "Removable Media Device"
+   },
+   {
+    "id": "D3-HCI",
+    "name": "Hardware Component Inventory",
+    "tactic": "Model",
+    "artifact": "Hardware Device"
+   }
+  ],
+  "T1056.001": [
+   {
+    "id": "D3-IDA",
+    "name": "Input Device Analysis",
+    "tactic": "Detect",
+    "artifact": "Input Device"
+   },
+   {
+    "id": "D3-RH",
+    "name": "Radiation Hardening",
+    "tactic": "Harden",
+    "artifact": "Hardware Device"
+   },
+   {
+    "id": "D3-IOPR",
+    "name": "IO Port Restriction",
+    "tactic": "Isolate",
+    "artifact": "Input Device"
+   },
+   {
+    "id": "D3-HCI",
+    "name": "Hardware Component Inventory",
+    "tactic": "Model",
+    "artifact": "Hardware Device"
+   }
+  ],
+  "T1078": [
+   {
+    "id": "D3-DAM",
+    "name": "Domain Account Monitoring",
+    "tactic": "Detect",
+    "artifact": "Domain User Account"
+   },
+   {
+    "id": "D3-LAM",
+    "name": "Local Account Monitoring",
+    "tactic": "Detect",
+    "artifact": "Local User Account"
+   },
+   {
+    "id": "D3-AL",
+    "name": "Account Locking",
+    "tactic": "Evict",
+    "artifact": "User Account"
+   },
+   {
+    "id": "D3-AA",
+    "name": "Agent Authentication",
+    "tactic": "Harden",
+    "artifact": "User Account"
+   },
+   {
+    "id": "D3-CDP",
+    "name": "Change Default Password",
+    "tactic": "Harden",
+    "artifact": "User Account"
+   },
+   {
+    "id": "D3-UAP",
+    "name": "User Account Permissions",
+    "tactic": "Isolate",
+    "artifact": "User Account"
+   },
+   {
+    "id": "D3-AM",
+    "name": "Access Modeling",
+    "tactic": "Model",
+    "artifact": "User Account"
+   },
+   {
+    "id": "D3-RUAA",
+    "name": "Restore User Account Access",
+    "tactic": "Restore",
+    "artifact": "User Account"
+   },
+   {
+    "id": "D3-ULA",
+    "name": "Unlock Account",
+    "tactic": "Restore",
+    "artifact": "User Account"
+   }
+  ],
+  "T1110": [
+   {
+    "id": "D3-DUC",
+    "name": "Decoy User Credential",
+    "tactic": "Deceive",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-AEM",
+    "name": "Application Exception Monitoring",
+    "tactic": "Detect",
+    "artifact": "Log"
+   },
+   {
+    "id": "D3-ANAA",
+    "name": "Administrative Network Activity Analysis",
+    "tactic": "Detect",
+    "artifact": "Intranet Administrative Network Traffic"
+   },
+   {
+    "id": "D3-APCA",
+    "name": "Application Protocol Command Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-CAA",
+    "name": "Connection Attempt Analysis",
+    "tactic": "Detect",
+    "artifact": "Intranet Network Traffic"
+   },
+   {
+    "id": "D3-CCSA",
+    "name": "Credential Compromise Scope Analysis",
+    "tactic": "Detect",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-CSPP",
+    "name": "Client-server Payload Profiling",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTCD",
+    "name": "Network Traffic Community Deviation",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTSA",
+    "name": "Network Traffic Signature Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-OPM",
+    "name": "Operational Process Monitoring",
+    "tactic": "Detect",
+    "artifact": "Event Log"
+   },
+   {
+    "id": "D3-PHDURA",
+    "name": "Per Host Download-Upload Ratio Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-PMAD",
+    "name": "Protocol Metadata Anomaly Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-RTSD",
+    "name": "Remote Terminal Session Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-UGLPA",
+    "name": "User Geolocation Logon Pattern Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-ANCI",
+    "name": "Authentication Cache Invalidation",
+    "tactic": "Evict",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-CR",
+    "name": "Credential Revocation",
+    "tactic": "Evict",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-CDP",
+    "name": "Change Default Password",
+    "tactic": "Harden",
+    "artifact": "Password"
+   },
+   {
+    "id": "D3-CH",
+    "name": "Credential Hardening",
+    "tactic": "Harden",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-CRO",
+    "name": "Credential Rotation",
+    "tactic": "Harden",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-MFA",
+    "name": "Multi-factor Authentication",
+    "tactic": "Harden",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-OTP",
+    "name": "One-time Password",
+    "tactic": "Harden",
+    "artifact": "Password"
+   },
+   {
+    "id": "D3-PR",
+    "name": "Password Rotation",
+    "tactic": "Harden",
+    "artifact": "Password"
+   },
+   {
+    "id": "D3-PWA",
+    "name": "Password Authentication",
+    "tactic": "Harden",
+    "artifact": "Password"
+   },
+   {
+    "id": "D3-SPP",
+    "name": "Strong Password Policy",
+    "tactic": "Harden",
+    "artifact": "Password"
+   },
+   {
+    "id": "D3-CTS",
+    "name": "Credential Transmission Scoping",
+    "tactic": "Isolate",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-NTF",
+    "name": "Network Traffic Filtering",
+    "tactic": "Isolate",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-RIC",
+    "name": "Reissue Credential",
+    "tactic": "Restore",
+    "artifact": "Credential"
+   }
+  ],
+  "T1110.001": [
+   {
+    "id": "D3-DUC",
+    "name": "Decoy User Credential",
+    "tactic": "Deceive",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-AEM",
+    "name": "Application Exception Monitoring",
+    "tactic": "Detect",
+    "artifact": "Log"
+   },
+   {
+    "id": "D3-CCSA",
+    "name": "Credential Compromise Scope Analysis",
+    "tactic": "Detect",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-OPM",
+    "name": "Operational Process Monitoring",
+    "tactic": "Detect",
+    "artifact": "Event Log"
+   },
+   {
+    "id": "D3-ANCI",
+    "name": "Authentication Cache Invalidation",
+    "tactic": "Evict",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-CR",
+    "name": "Credential Revocation",
+    "tactic": "Evict",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-CDP",
+    "name": "Change Default Password",
+    "tactic": "Harden",
+    "artifact": "Password"
+   },
+   {
+    "id": "D3-CH",
+    "name": "Credential Hardening",
+    "tactic": "Harden",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-CRO",
+    "name": "Credential Rotation",
+    "tactic": "Harden",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-MFA",
+    "name": "Multi-factor Authentication",
+    "tactic": "Harden",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-OTP",
+    "name": "One-time Password",
+    "tactic": "Harden",
+    "artifact": "Password"
+   },
+   {
+    "id": "D3-PR",
+    "name": "Password Rotation",
+    "tactic": "Harden",
+    "artifact": "Password"
+   },
+   {
+    "id": "D3-PWA",
+    "name": "Password Authentication",
+    "tactic": "Harden",
+    "artifact": "Password"
+   },
+   {
+    "id": "D3-SPP",
+    "name": "Strong Password Policy",
+    "tactic": "Harden",
+    "artifact": "Password"
+   },
+   {
+    "id": "D3-CTS",
+    "name": "Credential Transmission Scoping",
+    "tactic": "Isolate",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-RIC",
+    "name": "Reissue Credential",
+    "tactic": "Restore",
+    "artifact": "Credential"
+   }
+  ],
+  "T1110.003": [
+   {
+    "id": "D3-DUC",
+    "name": "Decoy User Credential",
+    "tactic": "Deceive",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-AEM",
+    "name": "Application Exception Monitoring",
+    "tactic": "Detect",
+    "artifact": "Log"
+   },
+   {
+    "id": "D3-ANAA",
+    "name": "Administrative Network Activity Analysis",
+    "tactic": "Detect",
+    "artifact": "Intranet Administrative Network Traffic"
+   },
+   {
+    "id": "D3-APCA",
+    "name": "Application Protocol Command Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-CAA",
+    "name": "Connection Attempt Analysis",
+    "tactic": "Detect",
+    "artifact": "Intranet Network Traffic"
+   },
+   {
+    "id": "D3-CCSA",
+    "name": "Credential Compromise Scope Analysis",
+    "tactic": "Detect",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-CSPP",
+    "name": "Client-server Payload Profiling",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTCD",
+    "name": "Network Traffic Community Deviation",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTSA",
+    "name": "Network Traffic Signature Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-OPM",
+    "name": "Operational Process Monitoring",
+    "tactic": "Detect",
+    "artifact": "Event Log"
+   },
+   {
+    "id": "D3-PHDURA",
+    "name": "Per Host Download-Upload Ratio Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-PMAD",
+    "name": "Protocol Metadata Anomaly Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-RTSD",
+    "name": "Remote Terminal Session Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-UGLPA",
+    "name": "User Geolocation Logon Pattern Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-ANCI",
+    "name": "Authentication Cache Invalidation",
+    "tactic": "Evict",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-CR",
+    "name": "Credential Revocation",
+    "tactic": "Evict",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-CDP",
+    "name": "Change Default Password",
+    "tactic": "Harden",
+    "artifact": "Password"
+   },
+   {
+    "id": "D3-CH",
+    "name": "Credential Hardening",
+    "tactic": "Harden",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-CRO",
+    "name": "Credential Rotation",
+    "tactic": "Harden",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-MFA",
+    "name": "Multi-factor Authentication",
+    "tactic": "Harden",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-OTP",
+    "name": "One-time Password",
+    "tactic": "Harden",
+    "artifact": "Password"
+   },
+   {
+    "id": "D3-PR",
+    "name": "Password Rotation",
+    "tactic": "Harden",
+    "artifact": "Password"
+   },
+   {
+    "id": "D3-PWA",
+    "name": "Password Authentication",
+    "tactic": "Harden",
+    "artifact": "Password"
+   },
+   {
+    "id": "D3-SPP",
+    "name": "Strong Password Policy",
+    "tactic": "Harden",
+    "artifact": "Password"
+   },
+   {
+    "id": "D3-CTS",
+    "name": "Credential Transmission Scoping",
+    "tactic": "Isolate",
+    "artifact": "Credential"
+   },
+   {
+    "id": "D3-NTF",
+    "name": "Network Traffic Filtering",
+    "tactic": "Isolate",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-RIC",
+    "name": "Reissue Credential",
+    "tactic": "Restore",
+    "artifact": "Credential"
+   }
+  ],
+  "T1213": [
+   {
+    "id": "D3-DNR",
+    "name": "Decoy Network Resource",
+    "tactic": "Deceive",
+    "artifact": "Network Resource"
+   },
+   {
+    "id": "D3-NRAM",
+    "name": "Network Resource Access Mediation",
+    "tactic": "Isolate",
+    "artifact": "Network Resource"
+   },
+   {
+    "id": "D3-DI",
+    "name": "Data Inventory",
+    "tactic": "Model",
+    "artifact": "Database"
+   },
+   {
+    "id": "D3-RD",
+    "name": "Restore Database",
+    "tactic": "Restore",
+    "artifact": "Database"
+   }
+  ],
+  "T1550.002": [
+   {
+    "id": "D3-PLA",
+    "name": "Process Lineage Analysis",
+    "tactic": "Detect",
+    "artifact": "Process"
+   },
+   {
+    "id": "D3-PSA",
+    "name": "Process Spawn Analysis",
+    "tactic": "Detect",
+    "artifact": "Process"
+   },
+   {
+    "id": "D3-PSMD",
+    "name": "Process Self-Modification Detection",
+    "tactic": "Detect",
+    "artifact": "Process"
+   },
+   {
+    "id": "D3-HR",
+    "name": "Host Reboot",
+    "tactic": "Evict",
+    "artifact": "Process"
+   },
+   {
+    "id": "D3-HS",
+    "name": "Host Shutdown",
+    "tactic": "Evict",
+    "artifact": "Process"
+   },
+   {
+    "id": "D3-PS",
+    "name": "Process Suspension",
+    "tactic": "Evict",
+    "artifact": "Process"
+   },
+   {
+    "id": "D3-PT",
+    "name": "Process Termination",
+    "tactic": "Evict",
+    "artifact": "Process"
+   },
+   {
+    "id": "D3-ABPI",
+    "name": "Application-based Process Isolation",
+    "tactic": "Isolate",
+    "artifact": "Process"
+   },
+   {
+    "id": "D3-HBPI",
+    "name": "Hardware-based Process Isolation",
+    "tactic": "Isolate",
+    "artifact": "Process"
+   },
+   {
+    "id": "D3-KBPI",
+    "name": "Kernel-based Process Isolation",
+    "tactic": "Isolate",
+    "artifact": "Process"
+   },
+   {
+    "id": "D3-SCF",
+    "name": "System Call Filtering",
+    "tactic": "Isolate",
+    "artifact": "Process"
+   },
+   {
+    "id": "D3-WSAM",
+    "name": "Web Session Access Mediation",
+    "tactic": "Isolate",
+    "artifact": "Service Application Process"
+   }
+  ],
+  "T1567": [
+   {
+    "id": "D3-APCA",
+    "name": "Application Protocol Command Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-CSPP",
+    "name": "Client-server Payload Profiling",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTCD",
+    "name": "Network Traffic Community Deviation",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTSA",
+    "name": "Network Traffic Signature Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-PHDURA",
+    "name": "Per Host Download-Upload Ratio Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-PMAD",
+    "name": "Protocol Metadata Anomaly Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-RPA",
+    "name": "Relay Pattern Analysis",
+    "tactic": "Detect",
+    "artifact": "Outbound Internet Network Traffic"
+   },
+   {
+    "id": "D3-RTSD",
+    "name": "Remote Terminal Session Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-UGLPA",
+    "name": "User Geolocation Logon Pattern Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTF",
+    "name": "Network Traffic Filtering",
+    "tactic": "Isolate",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-OTF",
+    "name": "Outbound Traffic Filtering",
+    "tactic": "Isolate",
+    "artifact": "Outbound Network Traffic"
+   }
+  ],
+  "T1570": [
+   {
+    "id": "D3-APCA",
+    "name": "Application Protocol Command Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-CAA",
+    "name": "Connection Attempt Analysis",
+    "tactic": "Detect",
+    "artifact": "Intranet Network Traffic"
+   },
+   {
+    "id": "D3-CSPP",
+    "name": "Client-server Payload Profiling",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-FC",
+    "name": "File Carving",
+    "tactic": "Detect",
+    "artifact": "File Transfer Network Traffic"
+   },
+   {
+    "id": "D3-NTCD",
+    "name": "Network Traffic Community Deviation",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTSA",
+    "name": "Network Traffic Signature Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-PHDURA",
+    "name": "Per Host Download-Upload Ratio Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-PMAD",
+    "name": "Protocol Metadata Anomaly Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-RTSD",
+    "name": "Remote Terminal Session Detection",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-UGLPA",
+    "name": "User Geolocation Logon Pattern Analysis",
+    "tactic": "Detect",
+    "artifact": "Network Traffic"
+   },
+   {
+    "id": "D3-NTF",
+    "name": "Network Traffic Filtering",
+    "tactic": "Isolate",
+    "artifact": "Network Traffic"
+   }
+  ]
+ }
+}
