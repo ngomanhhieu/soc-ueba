@@ -63,6 +63,11 @@ def label(code: str) -> str:
     return FEATURE_TEXT.get(code, code.replace("_", " "))
 
 
+def hits(inc: dict) -> int:
+    """Số lần phát hiện thật (cảnh báo luật lặp lại đã gộp ×N được cộng lại)."""
+    return inc.get("n_hits") or inc["n_alerts"]
+
+
 def headline(inc: dict) -> str:
     """One sentence that says what happened, built from the attack chain / timeline."""
     c = inc.get("attack_chain") or {}
@@ -82,7 +87,7 @@ def headline(inc: dict) -> str:
             return (f"Account {ent} signed in from unfamiliar hosts; the trail leads to {main}, "
                     f"a likely jump host used by {acc} accounts to reach {tgt} hosts{how}.")
         return (f"Account {ent} behaved unlike its usual self "
-                f"({inc['n_alerts']} detections from rules and machine learning).")
+                f"({hits(inc)} detections from rules and machine learning).")
     phases = c.get("phases") or []
     new = [s for s in c.get("steps", []) if s.get("new")]
     if new:
@@ -94,7 +99,7 @@ def headline(inc: dict) -> str:
         end = " ending in data theft" if "Exfiltration" in phases else ""
         return f"Employee {ent} started doing new things{end}: {story}."
     return (f"Employee {ent} behaved unlike their usual self "
-            f"({inc['n_alerts']} detections from rules and machine learning).")
+            f"({hits(inc)} detections from rules and machine learning).")
 
 
 def fmt_minutes(m) -> str:

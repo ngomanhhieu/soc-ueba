@@ -306,6 +306,7 @@ def build_incidents(ds: str, alerts: list[dict], days: list, truth: set, risk_sr
                 "day_first": d0, "day_last": d1,
                 "risk": float(g["risk"].iloc[grp[-1]]), "max_risk": max_risk,
                 "status": "new", "alert_ids": [a["alert_id"] for a in al], "n_alerts": len(al),
+                "n_hits": sum(a["features"].get("count", 1) for a in al),   # gồm các lần gộp ×N
                 "mitre_ids": mitre_ids, "tactics": tactics,
                 "detectors": sorted({a["rule_id"] or "ml" for a in al}),
                 "title": f"{ent}: " + "; ".join(titles[:3]),

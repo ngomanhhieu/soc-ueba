@@ -14,7 +14,7 @@
       <span>{{ i.entity }}</span>
       <span>{{ DATASET_LABEL.get(i.dataset, i.dataset) }}</span>
       <span>{{ i.opened_at[:10] }}{% if i.last_seen[:10] != i.opened_at[:10] %} → {{ i.last_seen[:10] }}{% endif %}</span>
-      <span>{{ i.n_alerts }} detection{{ 's' if i.n_alerts != 1 }}</span>
+      <span>{{ hits(i) }} detection{{ 's' if hits(i) != 1 }}</span>
       {{ truth(i, show_truth) }}
     </div>
     <div class="side-r">

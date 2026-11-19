@@ -1,95 +1,89 @@
 {% extends "base.html" %}
-{% from "_macros.html" import feed, sev with context %}
+{% from "_macros.html" import sev with context %}
 {% block title %}Overview{% endblock %}
 {% block body %}
 {% set lanl_days = d.alerts_per_day.get('lanl', []) %}
 {% set cert_days = d.alerts_per_day.get('cert', []) %}
 <div class="page-head">
   <div>
-    <h1>What needs attention</h1>
-    <p>The system learns how every user and host normally behaves, then flags what changes – stolen
-       accounts moving between machines (LANL) and employees taking data (CERT).
-       Data processed up to {% if lanl_days %}<b>{{ lanl_days[-1].day }}</b> (LANL){% endif %}{% if cert_days %} and <b>{{ cert_days[-1].day }}</b> (CERT){% endif %}.</p>
+    <h1>Overview</h1>
+    <p>Users and hosts whose behaviour changed the most{% if lanl_days %} · LANL up to <b>{{ lanl_days[-1].day }}</b>{% endif %}{% if cert_days %} · CERT up to <b>{{ cert_days[-1].day }}</b>{% endif %}</p>
   </div>
-  <a class="btn" href="/incidents?status=new">Open the queue →</a>
-</div>
-
-<div class="mode {{ 'on' if demo else '' }}">
-  {% if demo %}<b>Demo running</b> – processed so far: {{ demo|join(' · ') }}. Datasets not in the demo still show their full results.
-  {% else %}<b>Full results of the test period</b> – the whole pipeline was run once over LANL days 20–29 and CERT Sep 2010 – May 2011.
-  {% if user.role == 'lead' %}<a href="/replay">Start the day-by-day demo →</a>{% endif %}{% endif %}
-</div>
-<div class="stats">
-  <div class="stat acc"><div class="n">{{ n_open }}</div><div class="l">open incidents</div></div>
-  <div class="stat crit"><div class="n">{{ d.by_severity.get('critical', 0) }}</div><div class="l">critical</div></div>
-  <div class="stat"><div class="n">{{ d.by_verdict.get("none", 0) }}</div><div class="l">still need a verdict</div></div>
-  <div class="stat"><div class="n">{{ d.alerts_total }}</div><div class="l">detections ({{ d.alerts_by_source.get('rule', 0) }} rules · {{ d.alerts_by_source.get('ml', 0) }} ML)</div></div>
-</div>
-
-<section class="block">
-  <header><h2>SOC performance</h2><p>how fast attacks are detected and handled</p></header>
-  <div class="stats tight">
-    {% for ds, name in (('lanl', 'LANL'), ('cert', 'CERT')) %}{% set m = mttd.get(ds) %}{% if m %}
-    <div class="stat"><div class="n">{{ '%.1f' % m.mttd_days }}<small>days</small></div>
-      <div class="l"><b>MTTD · {{ name }}</b><br>{{ m.detected }}/{{ m.attackers }} caught · {{ m.same_day }} same day</div></div>
-    {% endif %}{% endfor %}
-    <div class="stat"><div class="n">{{ fmt_min(ops.mtta_median_min) }}</div>
-      <div class="l"><b>MTTA</b> · to verdict<br>{{ ops.triaged }} incidents triaged</div></div>
-    <div class="stat"><div class="n">{{ fmt_min(ops.mttr_median_min) }}</div>
-      <div class="l"><b>MTTR</b> · to approved response<br>{{ ops.responded }} responded</div></div>
+  <div class="chips">
+    {% if demo %}<span class="pill live" title="Datasets not in the demo still show their full results">● Demo running · {{ demo|join(' · ') }}</span>
+    {% else %}<span class="pill" title="The whole pipeline was run once over the test period">Full test-period results</span>{% endif %}
+    <a class="btn" href="/incidents?status=new">Open the queue →</a>
   </div>
-  <p class="muted small mt">MTTD = time from the attacker's first malicious day to the first incident, measured on the full test period
-     against the dataset labels (the system works in daily batches, so 0 = caught the same day).
-     MTTA / MTTR are measured in real time from when an incident appears on this console.</p>
-</section>
+</div>
 
-<section class="block">
-  <header><h2>Critical right now</h2><a href="/incidents?severity=critical">See all critical →</a></header>
-  {{ feed(attention, show_truth, VERDICTS, empty='Nothing critical is open.') }}
-</section>
+<div class="kpis">
+  <a class="kpi" href="/incidents?status=new">
+    <span class="k">Open incidents</span>
+    <span class="v">{{ n_open }}</span>
+    <span class="s"><b class="crit">{{ d.by_severity.get('critical', 0) }} critical</b> · {{ d.by_severity.get('high', 0) }} high</span>
+  </a>
+  <div class="kpi">
+    <span class="k">Waiting for a verdict</span>
+    <span class="v">{{ d.by_verdict.get("none", 0) }}</span>
+    <span class="s">{{ d.alerts_total }} detections ({{ d.alerts_by_source.get('rule', 0) }} rules · {{ d.alerts_by_source.get('ml', 0) }} ML)</span>
+  </div>
+  <div class="kpi" title="Mean time to detect: from the attacker's first malicious day to the first incident, full test period, measured against the dataset labels (0 = caught the same day)">
+    <span class="k">Time to detect (MTTD)</span>
+    <span class="v">{% if mttd.get('lanl') %}{{ '%.1f' % mttd.lanl.mttd_days }}<small>d LANL</small>{% else %}—{% endif %}</span>
+    <span class="s">{% if mttd.get('lanl') %}{{ mttd.lanl.detected }}/{{ mttd.lanl.attackers }} attackers caught{% endif %}{% if mttd.get('cert') %} · CERT {{ '%.1f' % mttd.cert.mttd_days }} d, {{ mttd.cert.detected }}/{{ mttd.cert.attackers }}{% endif %}</span>
+  </div>
+  <div class="kpi" title="Measured in real time on this console: incident appears → verdict saved (MTTA) / → first response approved (MTTR)">
+    <span class="k">Time to respond</span>
+    <span class="v">{{ fmt_min(ops.mttr_median_min) }}</span>
+    <span class="s">MTTA {{ fmt_min(ops.mtta_median_min) }} · {{ ops.triaged }} triaged · {{ ops.responded }} responded</span>
+  </div>
+</div>
 
-<div class="cols">
-  <section class="block">
-    <header><h2>Detections per day</h2>
-      <div class="tabs" data-tabs="perday"><button class="on" data-for="lanl">LANL</button><button data-for="cert">CERT</button></div></header>
-    <div data-pane="perday-lanl" class="chart" data-chart="perday" data-ds="lanl"></div>
-    <div data-pane="perday-cert" class="chart" data-chart="perday" data-ds="cert" hidden></div>
-    <div class="legend"><span><i class="rule"></i>Sigma rules – known attack patterns</span><span><i class="ml"></i>Machine learning – unusual behaviour</span></div>
+<div class="dash-grid">
+  <section class="panel">
+    <header class="ph"><h2>Critical right now</h2><a href="/incidents?severity=critical">All critical →</a></header>
+    <div class="mini">
+    {% for i in attention[:5] %}
+      <a class="mi {{ i.severity }}" href="/incidents/{{ i.incident_id }}">
+        <span class="top"><b>{{ i.entity.removeprefix('host:') }}</b><span class="tag">{{ 'LANL' if i.dataset == 'lanl' else 'CERT' }}</span>
+          <span class="faint small">{{ i.last_seen[:10] }}</span></span>
+        <span class="txt">{{ headline(i) }}</span>
+      </a>
+    {% else %}<p class="empty">Nothing critical is open.</p>{% endfor %}
+    </div>
   </section>
-  <section class="block">
-    <header><h2>Riskiest users &amp; hosts</h2><p>open incidents</p></header>
+  <section class="panel">
+    <header class="ph"><h2>Riskiest</h2><span class="faint small">open incidents</span></header>
     <div class="rank">
-    {% for r in risky %}
-      <a href="/incidents/{{ r.incident_id }}"><span class="who-e"><b>{{ r.entity }}</b><span>{{ DATASET_LABEL.get(r.dataset) }}</span></span>
+    {% for r in risky[:6] %}
+      <a href="/incidents/{{ r.incident_id }}"><span class="who-e"><b>{{ r.entity.removeprefix('host:') }}</b><span>{{ 'host · ' if r.entity.startswith('host:') }}{{ DATASET_LABEL.get(r.dataset) }}</span></span>
         <span class="meter"><i data-w="{{ (r.level * 100)|round|int }}"></i></span>{{ sev(r.severity) }}</a>
     {% endfor %}
     </div>
   </section>
 </div>
 
-<section class="block">
-  <header><h2>Attack stages seen (MITRE ATT&amp;CK)</h2><p>how many incidents show each stage of an attack</p></header>
-  {% set mx = (d.by_tactic.values()|list + [1])|max %}
-  <div class="killchain">
-  {% for t in tactics %}{% set n = d.by_tactic.get(t, 0) %}
-    <div class="kc h{{ 0 if n == 0 else 1 if n < mx * 0.25 else 2 if n < mx * 0.6 else 3 }}"><span>{{ t }}</span><b>{{ n }}</b></div>
-  {% endfor %}
-  </div>
-  <div class="chips small mt">
-    <span class="muted">Top techniques:</span>
-    {% for k, v in d.by_technique.items() | sort(attribute=1, reverse=True) %}{% if loop.index <= 8 %}
-    <a class="mitre" href="https://attack.mitre.org/techniques/{{ k | replace('.', '/') }}/" target="_blank" rel="noopener noreferrer">{{ k }} · {{ v }}</a>{% endif %}{% endfor %}
-  </div>
-</section>
-
-<section class="block">
-  <header><h2>How it works</h2></header>
-  <div class="flow">
-    <div><b>Learn normal</b><p>Each user's and host's usual sign-ins, devices, files and websites form a personal baseline.</p></div>
-    <div><b>Spot changes</b><p>Sigma rules catch known attack patterns; machine learning catches behaviour unlike the baseline.</p></div>
-    <div><b>Score &amp; group</b><p>Detections add up into a risk score per user or host; the riskiest become incidents.</p></div>
-    <div><b>Explain &amp; respond</b><p>A playbook rebuilds the attack story and proposes MITRE D3FEND responses for a lead to approve.</p></div>
-  </div>
-</section>
+<div class="dash-grid even">
+  <section class="panel">
+    <header class="ph"><h2>Detections per day</h2>
+      <div class="tabs" data-tabs="perday"><button class="on" data-for="lanl">LANL</button><button data-for="cert">CERT</button></div></header>
+    <div data-pane="perday-lanl" class="chart" data-chart="perday" data-ds="lanl"></div>
+    <div data-pane="perday-cert" class="chart" data-chart="perday" data-ds="cert" hidden></div>
+    <div class="legend"><span><i class="rule"></i>Sigma rules</span><span><i class="ml"></i>Machine learning</span></div>
+  </section>
+  <section class="panel">
+    <header class="ph"><h2>Attack stages seen</h2><span class="faint small">MITRE ATT&amp;CK · incidents per stage</span></header>
+    {% set mx = (d.by_tactic.values()|list + [1])|max %}
+    <div class="hbars">
+    {% for t in tactics %}{% set n = d.by_tactic.get(t, 0) %}{% if n %}
+      <div class="hb"><span>{{ t }}</span><span class="meter"><i data-w="{{ (100 * n / mx)|round|int }}"></i></span><b>{{ n }}</b></div>
+    {% endif %}{% endfor %}
+    </div>
+    <div class="chips small mt">
+    {% for k, v in d.by_technique.items() | sort(attribute=1, reverse=True) %}{% if loop.index <= 5 %}
+      <a class="mitre" href="https://attack.mitre.org/techniques/{{ k | replace('.', '/') }}/" target="_blank" rel="noopener noreferrer">{{ k }} · {{ v }}</a>{% endif %}{% endfor %}
+    </div>
+  </section>
+</div>
 <script type="application/json" id="dash-data">{{ d | tojson }}</script>
 {% endblock %}

@@ -33,7 +33,7 @@ app.add_middleware(SessionMiddleware, secret_key=SECRET, session_cookie="soc_ses
                    https_only=os.environ.get("SESSION_HTTPS_ONLY") == "1")
 app.mount("/static", StaticFiles(directory=HERE / "static"), name="static")
 templates = Jinja2Templates(directory=HERE / "templates")
-templates.env.globals.update(fmt_min=narrative.fmt_minutes,
+templates.env.globals.update(fmt_min=narrative.fmt_minutes, hits=narrative.hits,
                              headline=narrative.headline, reason_text=narrative.reason_text,
                              feature_label=narrative.label, phase_color=narrative.phase_color)
 throttle = LoginThrottle()
