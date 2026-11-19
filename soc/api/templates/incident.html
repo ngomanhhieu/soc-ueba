@@ -11,7 +11,7 @@
   <div class="meta">
     <span><a href="/entity/{{ inc.entity }}">{{ inc.entity }}</a> · {{ 'host' if inc.entity_type == 'host' else ('employee' if inc.dataset == 'cert' else 'account') }} profile →</span>
     <span>{{ inc.opened_at[:10] }}{% if inc.last_seen[:10] != inc.opened_at[:10] %} → {{ inc.last_seen[:10] }}{% endif %}</span>
-    <span>{{ inc.n_alerts }} detections</span>
+    <span>{{ hits(inc) }} detection{{ 's' if hits(inc) != 1 }}</span>
     <span class="stepper">
       <span class="{{ 'done' if inc.status in ('investigating', 'closed') else 'cur' }}">New</span><em></em>
       <span class="{{ 'done' if inc.status == 'closed' else 'cur' if inc.status == 'investigating' }}">Investigating</span><em></em>
