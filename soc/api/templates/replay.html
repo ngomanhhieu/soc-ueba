@@ -25,7 +25,7 @@
 {% endfor %}
 </div>
 <section class="block">
-  <header><h2>Task log</h2></header>
+  <header><h2>Last task log</h2><p>{% if st.log_time %}written {{ st.log_time }}{% if st.exit_code not in (none, 0) %} – this run failed{% endif %}{% else %}no task run from this page yet{% endif %}</p></header>
   <pre class="log" id="rp-log" data-running="{{ 'yes' if st.running else 'no' }}">{{ st.log | join('\n') }}</pre>
 </section>
 {% endblock %}

@@ -95,7 +95,20 @@ def dashboard() -> dict:
                                                                "calendar_interval": "day"},
                                             "aggs": {"src": {"terms": {"field": "source"}}}}}},
         "by_rule": {"terms": {"field": "rule_id", "size": 30, "missing": "ml"}},
+        # heatmap giai đoạn ATT&CK × thời gian (LANL theo ngày, CERT theo tuần – 9 tháng)
+        **{f"heat_{ds}": {"filter": {"term": {"dataset": ds}}, "aggs": {"t": {"date_histogram": {
+            "field": "timestamp", "calendar_interval": iv},
+            "aggs": {"tac": {"terms": {"field": "mitre.tactic", "size": 20}}}}}}
+           for ds, iv in (("lanl", "day"), ("cert", "week"))},
     })
+    heat = {}
+    for ds in ("lanl", "cert"):
+        cols = al["aggregations"][f"heat_{ds}"]["t"]["buckets"]
+        cells = {}                                    # giai đoạn → {cột thời gian: số cảnh báo}
+        for c in cols:
+            for b_ in c["tac"]["buckets"]:
+                cells.setdefault(b_["key"], {})[c["key_as_string"][:10]] = b_["doc_count"]
+        heat[ds] = {"cols": [c["key_as_string"][:10] for c in cols], "cells": cells}
     b = lambda r, k: {x["key"]: x["doc_count"] for x in r["aggregations"][k]["buckets"]}  # noqa
     per_day = {}
     for ds in al["aggregations"]["by_dataset"]["buckets"]:
@@ -108,7 +121,7 @@ def dashboard() -> dict:
             "by_dataset": b(inc, "by_dataset"), "by_tactic": b(inc, "by_tactic"),
             "by_technique": b(inc, "by_technique"), "by_verdict": b(inc, "by_verdict"),
             "alerts_by_source": b(al, "by_source"), "alerts_by_rule": b(al, "by_rule"),
-            "alerts_per_day": per_day}
+            "alerts_per_day": per_day, "heat": heat}
 
 
 def soc_ops() -> dict:

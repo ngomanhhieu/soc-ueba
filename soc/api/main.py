@@ -8,6 +8,7 @@ import os
 import secrets
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 
 from fastapi import FastAPI, Form, HTTPException, Request
@@ -164,7 +165,9 @@ def dashboard(request: Request):
         k = (i["dataset"], i["entity_type"])
         peak[k] = max(peak.get(k, 0), i["max_risk"])
     risky = sorted(({"entity": i["entity"], "dataset": i["dataset"], "severity": i["severity"],
-                     "incident_id": i["incident_id"],
+                     "incident_id": i["incident_id"], "hits": narrative.hits(i),
+                     "days": (datetime.fromisoformat(i["last_seen"][:10])
+                              - datetime.fromisoformat(i["opened_at"][:10])).days + 1,
                      "level": i["max_risk"] / (peak[(i["dataset"], i["entity_type"])] or 1)}
                     for i in open_rows), key=lambda x: -x["level"])[:8]
     from soc.replay import clock, fmt
@@ -172,11 +175,15 @@ def dashboard(request: Request):
     demo = [f"{name} {fmt(ds, mode[ds])}" for ds, name in
             (("lanl", "LANL test"), ("live", "LANL new days"), ("cert", "CERT"))
             if mode[ds] is not None]
+    heat = {ds: heat_rows(h) for ds, h in d.get("heat", {}).items()}
     mp = HERE.parents[1] / "soc" / "reports" / "soc_metrics.json"
     mttd = json.loads(mp.read_text(encoding="utf-8")) if mp.exists() else {}
-    return render(request, "dashboard.html", d=d, demo=demo, attention=attention, risky=risky,
+    return render(request, "dashboard.html", d=d, demo=demo, attention=attention, risky=risky, heat=heat,
                   ops=store.soc_ops(), mttd=mttd,
-                  n_open=len(open_rows), n_rows=len(rows), tactics=TACTIC_ORDER)
+                  n_open=len(open_rows), n_rows=len(rows), tactics=TACTIC_ORDER,
+                  spark=sparkline([r.get("rule", 0) + r.get("ml", 0)
+                                   for r in d["alerts_per_day"].get("lanl", [])]),
+                  sev_mix=mix([d["by_severity"].get(s, 0) for s in ("critical", "high", "medium")]))
 
 
 @app.get("/incidents", response_class=HTMLResponse)
@@ -236,6 +243,39 @@ EV_LABEL = {"destination.host": "Hosts signed in to", "source.host": "Signed in 
             "file.extension": "File types copied", "rare_domains": "Very rare websites"}
 
 
+def sparkline(vals: list, w: int = 120, h: int = 30) -> dict:
+    """Điểm cho sparkline SVG (vẽ sẵn ở server – hợp CSP): đường + vùng tô bên dưới."""
+    if len(vals) < 2:
+        return {}
+    top = max(vals) or 1
+    pts = [(round(i * w / (len(vals) - 1), 1), round(h - 2 - v / top * (h - 6), 1))
+           for i, v in enumerate(vals)]
+    line = " ".join(f"{x},{y}" for x, y in pts)
+    return {"line": line, "area": f"0,{h} {line} {w},{h}", "n": len(vals), "last": vals[-1]}
+
+
+def mix(counts: list) -> list:
+    tot = sum(counts) or 1
+    return [round(100 * c / tot) for c in counts]
+
+
+def heat_rows(h: dict) -> dict:
+    """Heatmap giai đoạn ATT&CK × thời gian: mức màu 0–5 theo thang log (một giai đoạn như
+    Exfiltration của CERT lớn gấp trăm lần các giai đoạn khác – thang tuyến tính sẽ xoá mất chúng)."""
+    import math
+    order = {t: i for i, t in enumerate(TACTIC_ORDER)}
+    mx = max([n for row in h["cells"].values() for n in row.values()] + [1])
+    rows = []
+    for tac in sorted(h["cells"], key=lambda x: order.get(x, 99)):
+        cells = [(c, h["cells"][tac].get(c, 0)) for c in h["cols"]]
+        rows.append({"tactic": tac, "total": sum(n for _, n in cells),
+                     "cells": [{"col": c, "n": n, "lvl": 0 if not n else
+                                max(1, math.ceil(5 * math.log1p(n) / math.log1p(mx)))}
+                               for c, n in cells]})
+    step = max(1, len(h["cols"]) // 6)
+    return {"cols": [c if i % step == 0 else "" for i, c in enumerate(h["cols"])], "rows": rows}
+
+
 def chain_svg(g: dict, top: int = 9) -> Markup:
     """Đồ thị chuỗi tấn công 3 cột: máy tấn công → tài khoản bị chiếm → máy bị chạm tới. SVG dựng
     ở server (đường cong Bézier, class CSS – hợp CSP, không script)."""
@@ -279,7 +319,7 @@ def chain_svg(g: dict, top: int = 9) -> Markup:
         cls = {"s": "node src", "u": "node acc", "d": "node"}[k]
         if k == "s" and name == g.get("main_host"):
             cls += " jump"
-        out.append(f'<rect class="{cls}" x="{x}" y="{y}" width="{w}" height="{bh}" rx="12"/>'
+        out.append(f'<rect class="{cls}" x="{x}" y="{y}" width="{w}" height="{bh}" rx="2"/>'
                    f'<text class="lbl" x="{x + w / 2}" y="{y + 16}" text-anchor="middle">'
                    f'{escape(name)}</text>')
     out.append("</svg>")
@@ -398,7 +438,9 @@ def replay_state() -> dict:
     return {"day": {ds: fmt(ds, clock(ds)) for ds in ("lanl", "live", "cert")},
             "running": bool(p and p.poll() is None), "action": JOB["action"], "by": JOB["by"],
             "at": JOB["at"], "exit_code": None if not p or p.poll() is None else p.returncode,
-            "log": [ln for ln in lines if "Warning" not in ln and "warn(" not in ln]}
+            "log": [ln for ln in lines if "Warning" not in ln and "warn(" not in ln],
+            "log_time": datetime.fromtimestamp(JOB_LOG.stat().st_mtime).strftime("%Y-%m-%d %H:%M")
+            if JOB_LOG.exists() else None}
 
 
 @app.get("/replay", response_class=HTMLResponse)

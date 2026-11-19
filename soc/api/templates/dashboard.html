@@ -10,9 +10,9 @@
     <p>Users and hosts whose behaviour changed the most{% if lanl_days %} · LANL up to <b>{{ lanl_days[-1].day }}</b>{% endif %}{% if cert_days %} · CERT up to <b>{{ cert_days[-1].day }}</b>{% endif %}</p>
   </div>
   <div class="chips">
-    {% if demo %}<span class="pill live" title="Datasets not in the demo still show their full results">● Demo running · {{ demo|join(' · ') }}</span>
-    {% else %}<span class="pill" title="The whole pipeline was run once over the test period">Full test-period results</span>{% endif %}
-    <a class="btn" href="/incidents?status=new">Open the queue →</a>
+    {% if demo %}<span class="pill live" title="Datasets not in the demo still show their full results"><i class="dot"></i>Demo running · {{ demo|join(' · ') }}</span>
+    {% else %}<span class="pill" title="The whole pipeline was run once over the test period"><i class="dot"></i>Full test-period results</span>{% endif %}
+    <a class="btn" href="/incidents?status=new">Open queue</a>
   </div>
 </div>
 
@@ -20,28 +20,36 @@
   <a class="kpi" href="/incidents?status=new">
     <span class="k">Open incidents</span>
     <span class="v">{{ n_open }}</span>
-    <span class="s"><b class="crit">{{ d.by_severity.get('critical', 0) }} critical</b> · {{ d.by_severity.get('high', 0) }} high</span>
+    <span class="mix" title="Critical / high / medium"><i class="c" data-w="{{ sev_mix[0] }}"></i><i class="h" data-w="{{ sev_mix[1] }}"></i><i class="m" data-w="{{ sev_mix[2] }}"></i></span>
+    <span class="s"><b class="crit">{{ d.by_severity.get('critical', 0) }} critical</b>, <b class="hi">{{ d.by_severity.get('high', 0) }} high</b>, {{ d.by_severity.get('medium', 0) }} medium</span>
   </a>
   <div class="kpi">
     <span class="k">Waiting for a verdict</span>
     <span class="v">{{ d.by_verdict.get("none", 0) }}</span>
-    <span class="s">{{ d.alerts_total }} detections ({{ d.alerts_by_source.get('rule', 0) }} rules · {{ d.alerts_by_source.get('ml', 0) }} ML)</span>
+    {% if spark %}<svg class="spark" viewBox="0 0 120 30" preserveAspectRatio="none" aria-hidden="true"><polygon points="{{ spark.area }}"/><polyline points="{{ spark.line }}"/></svg>{% endif %}
+    <span class="s">{{ d.alerts_total }} detections; LANL trend over {{ spark.n }} days</span>
   </div>
   <div class="kpi" title="Mean time to detect: from the attacker's first malicious day to the first incident, full test period, measured against the dataset labels (0 = caught the same day)">
     <span class="k">Time to detect (MTTD)</span>
     <span class="v">{% if mttd.get('lanl') %}{{ '%.1f' % mttd.lanl.mttd_days }}<small>d LANL</small>{% else %}—{% endif %}</span>
-    <span class="s">{% if mttd.get('lanl') %}{{ mttd.lanl.detected }}/{{ mttd.lanl.attackers }} attackers caught{% endif %}{% if mttd.get('cert') %} · CERT {{ '%.1f' % mttd.cert.mttd_days }} d, {{ mttd.cert.detected }}/{{ mttd.cert.attackers }}{% endif %}</span>
+    {% if mttd.get('lanl') %}<span class="prog"><i data-w="{{ (100 * mttd.lanl.detected / mttd.lanl.attackers)|round|int }}"></i></span>{% endif %}
+    <span class="s">{% if mttd.get('lanl') %}{{ mttd.lanl.detected }}/{{ mttd.lanl.attackers }} attackers caught{% endif %}{% if mttd.get('cert') %}; CERT {{ '%.1f' % mttd.cert.mttd_days }} d, {{ mttd.cert.detected }}/{{ mttd.cert.attackers }}{% endif %}</span>
   </div>
   <div class="kpi" title="Measured in real time on this console: incident appears → verdict saved (MTTA) / → first response approved (MTTR)">
     <span class="k">Time to respond</span>
+    {% if ops.mttr_median_min is none and ops.mtta_median_min is none %}
+    <span class="v quiet">Not started</span>
+    <span class="s">Save a verdict on any incident to start the clock</span>
+    {% else %}
     <span class="v">{{ fmt_min(ops.mttr_median_min) }}</span>
-    <span class="s">MTTA {{ fmt_min(ops.mtta_median_min) }} · {{ ops.triaged }} triaged · {{ ops.responded }} responded</span>
+    <span class="s">MTTA {{ fmt_min(ops.mtta_median_min) }}; {{ ops.triaged }} triaged, {{ ops.responded }} responded</span>
+    {% endif %}
   </div>
 </div>
 
 <div class="dash-grid">
   <section class="panel">
-    <header class="ph"><h2>Critical right now</h2><a href="/incidents?severity=critical">All critical →</a></header>
+    <header class="ph"><h2><svg class="icon ti crit"><use href="#i-alert"/></svg>Critical right now</h2><a href="/incidents?severity=critical">View all critical</a></header>
     <div class="mini">
     {% for i in attention[:5] %}
       <a class="mi {{ i.severity }}" href="/incidents/{{ i.incident_id }}">
@@ -53,11 +61,14 @@
     </div>
   </section>
   <section class="panel">
-    <header class="ph"><h2>Riskiest</h2><span class="faint small">open incidents</span></header>
+    <header class="ph"><h2><svg class="icon ti hi"><use href="#i-rank"/></svg>Riskiest</h2><span class="faint small">open incidents</span></header>
     <div class="rank">
     {% for r in risky[:6] %}
-      <a href="/incidents/{{ r.incident_id }}"><span class="who-e"><b>{{ r.entity.removeprefix('host:') }}</b><span>{{ 'host · ' if r.entity.startswith('host:') }}{{ DATASET_LABEL.get(r.dataset) }}</span></span>
-        <span class="meter"><i data-w="{{ (r.level * 100)|round|int }}"></i></span>{{ sev(r.severity) }}</a>
+      <a href="/incidents/{{ r.incident_id }}" class="rk">
+        <span class="no">{{ loop.index }}</span>
+        <span class="who-e"><b>{{ r.entity.removeprefix('host:') }}</b><span>{{ 'Host' if r.entity.startswith('host:') else ('Employee' if r.dataset == 'cert' else 'Account') }}, {{ 'LANL' if r.dataset == 'lanl' else 'CERT' }}</span></span>
+        <span class="ev"><b>{{ r.hits }}</b> detection{{ 's' if r.hits != 1 }}<br><span>over {{ r.days }} day{{ 's' if r.days != 1 }}</span></span>
+        {{ sev(r.severity) }}</a>
     {% endfor %}
     </div>
   </section>
@@ -65,20 +76,30 @@
 
 <div class="dash-grid even">
   <section class="panel">
-    <header class="ph"><h2>Detections per day</h2>
+    <header class="ph"><h2><svg class="icon ti ml"><use href="#i-chart"/></svg>Detections per day</h2>
       <div class="tabs" data-tabs="perday"><button class="on" data-for="lanl">LANL</button><button data-for="cert">CERT</button></div></header>
     <div data-pane="perday-lanl" class="chart" data-chart="perday" data-ds="lanl"></div>
     <div data-pane="perday-cert" class="chart" data-chart="perday" data-ds="cert" hidden></div>
     <div class="legend"><span><i class="rule"></i>Sigma rules</span><span><i class="ml"></i>Machine learning</span></div>
   </section>
   <section class="panel">
-    <header class="ph"><h2>Attack stages seen</h2><span class="faint small">MITRE ATT&amp;CK · incidents per stage</span></header>
-    {% set mx = (d.by_tactic.values()|list + [1])|max %}
-    <div class="hbars">
-    {% for t in tactics %}{% set n = d.by_tactic.get(t, 0) %}{% if n %}
-      <div class="hb"><span>{{ t }}</span><span class="meter"><i data-w="{{ (100 * n / mx)|round|int }}"></i></span><b>{{ n }}</b></div>
-    {% endif %}{% endfor %}
-    </div>
+    <header class="ph"><h2><svg class="icon ti acc"><use href="#i-grid"/></svg>Attack stages over time</h2>
+      <div class="tabs" data-tabs="heat"><button class="on" data-for="lanl">LANL · days</button><button data-for="cert">CERT · weeks</button></div></header>
+    {% for ds in ('lanl', 'cert') %}{% set hm = heat.get(ds) %}
+    <div data-pane="heat-{{ ds }}" {{ 'hidden' if ds == 'cert' }}>
+    {% if hm and hm.rows %}
+      <table class="heat">
+        <tbody>
+        {% for r in hm.rows %}
+          <tr><th scope="row"><span>{{ r.tactic }}</span><b>{{ r.total }}</b></th>
+          {% for c in r.cells %}<td class="l{{ c.lvl }}" title="{{ r.tactic }} · {{ c.col }}: {{ c.n }} detections"></td>{% endfor %}</tr>
+        {% endfor %}
+        </tbody>
+        <tfoot><tr><th></th>{% for c in hm.cols %}<td>{{ c[5:] }}</td>{% endfor %}</tr></tfoot>
+      </table>
+      <div class="legend heat-legend"><span>fewer</span><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i><i class="l5"></i><span>more detections (log scale)</span></div>
+    {% else %}<p class="empty">No detections yet.</p>{% endif %}
+    </div>{% endfor %}
     <div class="chips small mt">
     {% for k, v in d.by_technique.items() | sort(attribute=1, reverse=True) %}{% if loop.index <= 5 %}
       <a class="mitre" href="https://attack.mitre.org/techniques/{{ k | replace('.', '/') }}/" target="_blank" rel="noopener noreferrer">{{ k }} · {{ v }}</a>{% endif %}{% endfor %}
