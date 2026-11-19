@@ -1,4 +1,4 @@
-{% macro sev(s) %}<span class="sev sev-{{ s }}">{{ s }}</span>{% endmacro %}
+{% macro sev(s) %}<span class="sev sev-{{ s }}"><svg class="si" aria-hidden="true"><use href="#i-sev-{{ s }}"/></svg>{{ s|capitalize }}</span>{% endmacro %}
 {% macro mitre(ids) %}{% for m in ids %}<a class="mitre" href="https://attack.mitre.org/techniques/{{ m | replace('.', '/') }}/" target="_blank" rel="noopener noreferrer" title="Open in MITRE ATT&amp;CK">{{ m }}</a>{% endfor %}{% endmacro %}
 {% macro truth(x, show) %}{% if show %}{% if x.ground_truth %}<span class="tag truth-yes">labelled malicious</span>{% else %}<span class="tag truth-no">label: benign</span>{% endif %}{% endif %}{% endmacro %}
 {% macro status(s) %}<span class="tag st-{{ s }}">{{ STATUS_LABEL.get(s, s) }}</span>{% endmacro %}

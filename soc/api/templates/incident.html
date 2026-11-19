@@ -9,7 +9,7 @@
     <span class="faint small mono">{{ inc.incident_id }}</span>{{ truth(inc, show_truth) }}</div>
   <p class="sentence">{{ headline(inc) }}</p>
   <div class="meta">
-    <span><a href="/entity/{{ inc.entity }}">{{ inc.entity }}</a> · {{ 'host' if inc.entity_type == 'host' else ('employee' if inc.dataset == 'cert' else 'account') }} profile →</span>
+    <span><a href="/entity/{{ inc.entity }}">{{ inc.entity }}</a> · {{ 'host' if inc.entity_type == 'host' else ('employee' if inc.dataset == 'cert' else 'account') }} profile</span>
     <span>{{ inc.opened_at[:10] }}{% if inc.last_seen[:10] != inc.opened_at[:10] %} → {{ inc.last_seen[:10] }}{% endif %}</span>
     <span>{{ hits(inc) }} detection{{ 's' if hits(inc) != 1 }}</span>
     <span class="stepper">
