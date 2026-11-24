@@ -22,6 +22,10 @@ LANL_REDTEAM_GZ = LANL_RAW / "redteam.txt.gz"
 LANL_EVENTS_DIR = DATA_DIR / "lanl_events"      # parquet theo ngày (sự kiện thô đã lọc)
 LANL_DAILY_DIR = DATA_DIR / "lanl_daily"        # tổng hợp theo ngày (features.py giai đoạn 1)
 CERT_RAW = DATA_DIR / "cert"
+# Bản CERT: r4.2 = bộ chính (thiết kế + chọn mô hình); r5.2 = KIỂM CHỨNG NGOÀI (công ty mô phỏng khác,
+# chạy nguyên pipeline, không chỉnh). Bản khác r4.2 ghi ra file riêng có hậu tố (vd. _r52).
+CERT_RELEASE = os.environ.get("CERT_RELEASE", "r4.2")
+CERT_TAG = "" if CERT_RELEASE == "r4.2" else "_" + CERT_RELEASE.replace(".", "")
 
 PROCESSED_DIR = ML_DIR / "data" / "processed"   # feature table (nhỏ)
 MODELS_DIR = ML_DIR / "models"

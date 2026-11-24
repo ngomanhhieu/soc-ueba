@@ -1,0 +1,64 @@
+{
+  "split_date": "2010-09-01",
+  "alert_model": "ae_score",
+  "user_level": {
+    "0.99": {
+      "alerts": 3360,
+      "alerts_per_day": 12.22,
+      "insiders_caught": 66,
+      "insiders_total": 83,
+      "by_scenario": {
+        "1": "21/21",
+        "2": "19/26",
+        "3": "7/7",
+        "4": "19/29"
+      }
+    },
+    "0.995": {
+      "alerts": 1760,
+      "alerts_per_day": 6.4,
+      "insiders_caught": 60,
+      "insiders_total": 83,
+      "by_scenario": {
+        "1": "21/21",
+        "2": "15/26",
+        "3": "7/7",
+        "4": "17/29"
+      }
+    },
+    "0.999": {
+      "alerts": 418,
+      "alerts_per_day": 1.52,
+      "insiders_caught": 32,
+      "insiders_total": 83,
+      "by_scenario": {
+        "1": "21/21",
+        "2": "4/26",
+        "3": "7/7",
+        "4": "0/29"
+      }
+    },
+    "top2/day": {
+      "alerts": 550,
+      "insiders_caught": 34,
+      "insiders_total": 83,
+      "by_scenario": {
+        "1": "20/21",
+        "2": "6/26",
+        "3": "7/7",
+        "4": "1/29"
+      }
+    },
+    "top5/day": {
+      "alerts": 1375,
+      "insiders_caught": 50,
+      "insiders_total": 83,
+      "by_scenario": {
+        "1": "21/21",
+        "2": "12/26",
+        "3": "7/7",
+        "4": "10/29"
+      }
+    }
+  }
+}

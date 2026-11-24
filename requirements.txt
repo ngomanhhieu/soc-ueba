@@ -6,3 +6,6 @@ uvicorn[standard]
 python-multipart     # form
 itsdangerous         # cookie phiên ký số
 jinja2
+pytest>=8          # unit test: python -m pytest tests
+pysigma>=1.5        # chuyển luật Sigma → Kibana Detection Engine (soc.rules.export_kibana)
+pysigma-backend-elasticsearch>=2.1

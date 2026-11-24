@@ -19,14 +19,15 @@ import pyarrow as pa
 import pyarrow.compute as pc
 import pyarrow.csv as pv
 
-from config import CERT_RAW, PROCESSED_DIR
+from config import CERT_RAW, CERT_RELEASE, CERT_TAG, PROCESSED_DIR
 
-R42 = CERT_RAW / "r4.2"
+R42 = CERT_RAW / CERT_RELEASE          # tên giữ lại cho tương thích; trỏ tới bản đang chọn
+R5 = CERT_RELEASE >= "r5"              # r5.x/r6.x: log có thêm cột (activity, to_removable_media…)
 ANSWERS = CERT_RAW / "answers"
-OUT_PATH = PROCESSED_DIR / "cert_user_day_features.parquet"
+OUT_PATH = PROCESSED_DIR / f"cert_user_day_features{CERT_TAG}.parquet"
 WORK_START, WORK_END = 8, 18          # giờ hành chính
 COMPANY_DOMAIN = "dtaa.com"
-HTTP_DOMAINS_PATH = CERT_RAW / "http_user_day_domain.parquet"   # cert_http_domains.py
+HTTP_DOMAINS_PATH = CERT_RAW / f"http_user_day_domain{CERT_TAG}.parquet"   # cert_http_domains.py
 # Nhóm URL theo DANH MỤC, giống web proxy/URL filter của SOC (không lấy từ answers/ – bản cũ
 # lấy wikileaks và các trang keylogger từ chính sự kiện insider → rò nhãn vào feature):
 #   http_job        – danh mục "tìm việc": mọi trang tuyển dụng có trong dữ liệu, chọn theo tên
@@ -87,11 +88,28 @@ def add_trends(feats: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
     return feats.join(out.reindex(feats.index)), list(out.columns)
 
 
+# r5.x ghi MỌI thao tác file / email nhận + gửi → lọc về đúng nghĩa của r4.2 (chép ra USB, email gửi)
+R5_FILTER = {"file": ("to_removable_media", "True"), "email": ("activity", "Send")}
+
+
 def _read(name, cols, block=64 << 20):
     path = R42 / f"{name}.csv"
-    return pv.open_csv(path, read_options=pv.ReadOptions(block_size=block),
-                       convert_options=pv.ConvertOptions(include_columns=cols,
-                                                         column_types={c: pa.string() for c in cols}))
+    flt = R5_FILTER.get(name) if R5 else None
+    use = cols + [flt[0]] if flt and flt[0] not in cols else cols
+    reader = pv.open_csv(path, read_options=pv.ReadOptions(block_size=block),
+                         convert_options=pv.ConvertOptions(include_columns=use,
+                                                           column_types={c: pa.string() for c in use}))
+    for batch in reader:
+        if flt:
+            batch = batch.filter(pc.equal(batch.column(flt[0]), flt[1]))
+        yield batch
+
+
+def attachment_count(col) -> pd.Series:
+    """r4.2: số tệp đính kèm; r5.x: danh sách 'tên(kích thước);…' → đếm số mục."""
+    s = pd.Series(col.fill_null("").to_numpy(zero_copy_only=False), dtype=object).astype(str)
+    num = pd.to_numeric(s, errors="coerce")
+    return num.fillna(s.map(lambda x: sum(1 for p in x.split(";") if p.strip())))
 
 
 def _time_parts(batch):
@@ -169,8 +187,7 @@ def email_features(t0):
             lambda xs: sum(1 for x in xs if x and not x.endswith(COMPANY_DOMAIN)))
         size = pd.to_numeric(pd.Series(b.column("size").to_numpy(zero_copy_only=False)),
                              errors="coerce").fillna(0)
-        att = pd.to_numeric(pd.Series(b.column("attachments").to_numpy(zero_copy_only=False)),
-                            errors="coerce").fillna(0)
+        att = attachment_count(b.column("attachments"))
         return base[["user", "date"]].assign(
             email_n=1, email_ext_rcpt=n_ext.values, email_attach=att.values,
             email_size_sum=size.values, email_offhours=base["offhours"])
@@ -225,11 +242,11 @@ def load_labels() -> pd.DataFrame:
     nạn nhân, không phải insider; các paper về CERT cũng gắn nhãn theo insider.
     """
     ins = pd.read_csv(ANSWERS / "insiders.csv")
-    ins = ins[ins["dataset"].astype(str) == "4.2"]
+    ins = ins[ins["dataset"].astype(str) == CERT_RELEASE.lstrip("r")]
     ins["start"] = pd.to_datetime(ins["start"], format="%m/%d/%Y %H:%M:%S").dt.floor("D")
     ins["end"] = pd.to_datetime(ins["end"], format="%m/%d/%Y %H:%M:%S").dt.floor("D")
     rows = []
-    for f in ANSWERS.glob("r4.2-*/*.csv"):
+    for f in ANSWERS.glob(f"{CERT_RELEASE}-*/*.csv"):
         scenario = int(f.parent.name.split("-")[-1])
         for line in f.read_text(encoding="utf-8", errors="ignore").splitlines():
             parts = line.split(",")

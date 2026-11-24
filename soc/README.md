@@ -27,6 +27,8 @@ python -m soc.mitre.build_d3fend                   # ATT&CK → D3FEND → soc/m
 
 python -m soc.rules.run_rules tune                 # chọn ngưỡng luật trên TRAIN (không nhãn)
 python -m soc.rules.run_rules run                  # chạy luật LANL ngày 1–29 + CERT, đánh giá
+python -m soc.rules.export_kibana --push          # pySigma → 11 luật ES|QL trong Kibana Detection Engine
+python -m pytest tests                             # 30 unit test: engine Sigma, rủi ro, gộp cảnh báo, chuỗi tấn công, playbook
 python -m soc.risk.risk                            # điểm rủi ro: chỉ luật / chỉ ML / cả hai
 python -m soc.graph.edges                          # đồ thị xác thực LANL theo ngày (~280k cạnh/ngày)
 python -m soc.risk.incidents                       # cảnh báo + incident (test) + chuỗi tấn công + playbook

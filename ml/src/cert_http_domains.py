@@ -14,10 +14,7 @@ import pyarrow as pa
 import pyarrow.compute as pc
 import pyarrow.csv as pv
 
-from config import CERT_RAW
-
-R42 = CERT_RAW / "r4.2"
-OUT_PATH = CERT_RAW / "http_user_day_domain.parquet"
+from cert_features import HTTP_DOMAINS_PATH as OUT_PATH, R42
 
 
 def main():

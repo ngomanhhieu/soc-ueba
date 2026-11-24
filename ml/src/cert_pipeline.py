@@ -16,15 +16,15 @@ import pandas as pd
 
 from cert_features import (MODEL_COLS as FEATURE_COLS, OUT_PATH as FEATURES_PATH, add_trends,
                            add_windows)
-from config import MITRE_PATH, PROCESSED_DIR, REPORTS_DIR, SCHEMA_PATH
+from config import CERT_RELEASE, CERT_TAG, MITRE_PATH, PROCESSED_DIR, REPORTS_DIR, SCHEMA_PATH
 from evaluate import evaluate
 from sklearn.metrics import average_precision_score
 from export_alerts import severity
 from models import AnomalyModels, percentile_score
 from statistical import self_zscores, statistical_scores
 
-SCORES_PATH = PROCESSED_DIR / "cert_scores.parquet"
-ALERTS_PATH = REPORTS_DIR / "alerts_cert.json"
+SCORES_PATH = PROCESSED_DIR / f"cert_scores{CERT_TAG}.parquet"
+ALERTS_PATH = REPORTS_DIR / f"alerts_cert{CERT_TAG}.json"
 SCORE_COLS = ["stat_score", "iforest_score", "ae_score", "ensemble_score", "if_ae_score"]
 SEEDS = (42, 7, 2024)
 LOG_COLS = [c for c in FEATURE_COLS if not c.endswith("_hour")]   # mọi cột đếm/kích thước
@@ -73,7 +73,7 @@ def export_alerts(scores, threshold, max_alerts):
             "severity": severity(float(r.alert_score)),
             "mitre": cert_mitre(reasons),
             "features": {**{c: round(float(getattr(r, c)), 3) for c in STAT_COLS},
-                         "top_reasons": reasons, "role": r.role, "dataset": "CERT r4.2",
+                         "top_reasons": reasons, "role": r.role, "dataset": f"CERT {CERT_RELEASE}",
                          "ground_truth_insider": bool(r.is_malicious)},
         }
         jsonschema.validate(a, schema)
@@ -149,7 +149,7 @@ def main():
 
     is_train = (feats["split"] == "train").values
     sc, model = bagged(feats[is_train], feats, is_train)
-    model.save("cert")       # lưu mô hình của seed cuối (tham khảo); điểm dùng trung bình 3 seed
+    model.save(f"cert{CERT_TAG}")       # lưu mô hình của seed cuối (tham khảo); điểm dùng trung bình 3 seed
     feats = feats.join(sc)
     # đưa stat_score về cùng thang percentile (so với train) để so sánh ngưỡng công bằng
     feats["stat_score"] = percentile_score(feats.loc[is_train, "stat_score"].values,
@@ -158,14 +158,14 @@ def main():
                + feats["ae_score"].values) / 3
     feats["ensemble_score"] = percentile_score(ens_raw[is_train], ens_raw)
     feats["alert_score"] = feats[best]
-    (REPORTS_DIR / "cert_model_selection.json").write_text(
+    (REPORTS_DIR / f"cert_model_selection{CERT_TAG}.json").write_text(
         json.dumps({"validation_pr_auc": val_pr, "selected": best}, indent=2), encoding="utf-8")
     feats.drop(columns=list(zself.columns)).to_parquet(SCORES_PATH, index=False)
 
     print("[A6] Đánh giá trên tập TEST (từ", args.split_date, ")")
     test = feats[feats["split"] == "test"]
     evaluate(test, SCORE_COLS, label_col="is_malicious", threshold=args.threshold,
-             name="cert_test")
+             name=f"cert{CERT_TAG}_test")
     print("[A6] Mức người dùng: bắt được insider ít nhất 1 lần?")
     summary = {"split_date": args.split_date, "alert_model": best, "user_level": {}}
     ins = test.loc[test["is_malicious"], ["user", "scenario"]].drop_duplicates("user")
@@ -192,7 +192,8 @@ def main():
                             for s, g in ins.groupby("scenario")}}
         print(f"    top {k}/ngày: bắt {len(caught)}/{len(ins)} insider, theo kịch bản "
               f"{summary['user_level'][f'top{k}/day']['by_scenario']}")
-    (REPORTS_DIR / "cert_summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    (REPORTS_DIR / f"cert_summary{CERT_TAG}.json").write_text(json.dumps(summary, indent=2),
+                                                             encoding="utf-8")
 
     print("[A7+A8] Xuất cảnh báo")
     export_alerts(feats, args.threshold, args.max_alerts)
